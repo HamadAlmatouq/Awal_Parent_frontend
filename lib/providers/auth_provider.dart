@@ -10,6 +10,7 @@ class AuthProvider extends ChangeNotifier {
   static const tokenKey = "token";
   User? user;
   String token = "";
+  
   Future<void> signup(
       {required String username,
       required String password,
@@ -18,7 +19,7 @@ class AuthProvider extends ChangeNotifier {
     token = await AuthServices().signup(
         username: username,
         password: password,);
-    setToken(token);
+    await setToken(token);
     print(token);
     notifyListeners();
   }
@@ -28,14 +29,13 @@ class AuthProvider extends ChangeNotifier {
     required String password,
   }) async {
     try {
-      token =
-          await AuthServices().signin(username: username, password: password);
+      token = await AuthServices().signin(username: username, password: password);
       await setToken(token);
       print(token);
       notifyListeners();
-
       return true;
-    } on Exception catch (e) {
+    } catch (e) {
+      print("Sign in error: $e");
       return false;
     }
   }
@@ -51,6 +51,9 @@ class AuthProvider extends ChangeNotifier {
         HttpHeaders.authorizationHeader: 'Bearer $token',
       };
       return null;
+    }
+    else {
+      user = null;
     }
     user = User.fromJson(Jwt.parseJwt(token));
   }

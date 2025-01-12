@@ -134,7 +134,7 @@ class _SignupPageState extends State<SignupPage> {
                           username: usernameController.text,
                           password: passwordController.text,
                         );
-                        context.pop();
+                        context.go("/home");
                       }
                     },
                     child: const Text(

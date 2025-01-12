@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthServices {
+
+  //Sign up
   Future<String> signup({
     required String username,
     required String password,
@@ -23,6 +25,9 @@ class AuthServices {
     return token;
   }
 
+
+
+  //Sign in
   Future<String> signin({
     required String username,
     required String password,
