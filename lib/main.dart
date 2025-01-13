@@ -36,7 +36,7 @@ class MainApp extends StatelessWidget {
         ),
         GoRoute(
           path: '/home',
-          builder: (context, state) => HomePage(),
+          builder: (context, state) => DashboardPage(),
         ),
       ],
     );

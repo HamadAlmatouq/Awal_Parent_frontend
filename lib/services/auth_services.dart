@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthServices {
-
   //Sign up
   Future<String> signup({
     required String username,
@@ -11,21 +10,29 @@ class AuthServices {
   }) async {
     late String token;
     try {
+      final data = {
+        "username": username,
+        "password": password,
+      };
+      print("Sign up request payload: $data");
       Response response = await Client.dio.post(
         "/auth/signup",
-        data: FormData.fromMap({
-          "username": username,
-          "password": password,
-        }),
+        data: data,
+        // data: FormData.fromMap({
+        //   "username": username,
+        //   "password": password,
+        // }),
       );
+
+      print("Signup response: ${response.data}");
       token = response.data["token"];
+      print("Token received: $token");
     } catch (error) {
-      print("error");
+      print("Signup error: $error");
+      token = "";
     }
     return token;
   }
-
-
 
   //Sign in
   Future<String> signin({

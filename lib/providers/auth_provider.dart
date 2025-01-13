@@ -9,19 +9,29 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthProvider extends ChangeNotifier {
   static const tokenKey = "token";
   User? user;
-  String token = "";
-  
-  Future<void> signup(
-      {required String username,
-      required String password,
-      String? imagePath,
-      String? defaultImage}) async {
-    token = await AuthServices().signup(
+  late String token;
+
+  Future<bool> signup({
+    required String username,
+    required String password,
+  }) async {
+    try {
+      token = await AuthServices().signup(
         username: username,
-        password: password,);
-    await setToken(token);
-    print(token);
-    notifyListeners();
+        password: password,
+      );
+      if (token.isNotEmpty) {
+        await setToken(token);
+        print(token);
+        notifyListeners();
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print("Sign up error: $e");
+      return false;
+    }
   }
 
   Future<bool> signin({
@@ -30,10 +40,14 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     try {
       token = await AuthServices().signin(username: username, password: password);
-      await setToken(token);
-      print(token);
-      notifyListeners();
-      return true;
+      if (token.isNotEmpty) {
+        await setToken(token);
+        print(token);
+        notifyListeners();
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       print("Sign in error: $e");
       return false;
@@ -44,26 +58,32 @@ class AuthProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(tokenKey, token);
 
-    // header
     if (token.isNotEmpty && Jwt.getExpiryDate(token)!.isAfter(DateTime.now())) {
-      user = User.fromJson(Jwt.parseJwt(token));
-      Client.dio.options.headers = {
-        HttpHeaders.authorizationHeader: 'Bearer $token',
-      };
-      return null;
-    }
-    else {
+      try {
+        user = User.fromJson(Jwt.parseJwt(token));
+        Client.dio.options.headers = {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        };
+      } catch (e) {
+        print("Invalid token: $e");
+        user = null;
+      }
+    } else {
       user = null;
     }
-    user = User.fromJson(Jwt.parseJwt(token));
   }
 
   bool isAuth() {
     if (token.isNotEmpty && Jwt.getExpiryDate(token)!.isAfter(DateTime.now())) {
-      user = User.fromJson(Jwt.parseJwt(token));
-      Client.dio.options.headers[HttpHeaders.authorizationHeader] =
-          "Bearer $token";
-      return true;
+      try {
+        user = User.fromJson(Jwt.parseJwt(token));
+        Client.dio.options.headers[HttpHeaders.authorizationHeader] =
+            "Bearer $token";
+        return true;
+      } catch (e) {
+        print("Invalid token: $e");
+        return false;
+      }
     }
     return false;
   }
