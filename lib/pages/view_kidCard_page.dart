@@ -1,4 +1,9 @@
+import 'package:bkid_frontend/pages/allowance_dialogue.dart';
+import 'package:bkid_frontend/pages/goals_page.dart';
+import 'package:bkid_frontend/pages/restrictions_page.dart';
+import 'package:bkid_frontend/pages/tasks_page.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ViewKidCard extends StatelessWidget {
   final Map<String, dynamic> kid;
@@ -75,7 +80,8 @@ class ViewKidCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildInfoColumn('Balance', '${kid['balance']} KWD', Colors.blue),
+                        _buildInfoColumn(
+                            'Balance', '${kid['balance']} KWD', Colors.blue),
                         _buildInfoColumn('Savings', '33.870 KWD', Colors.blue),
                         _buildInfoColumn('Steps', '2902', Colors.blue),
                       ],
@@ -89,10 +95,99 @@ class ViewKidCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildActionButton(Icons.checklist, 'Tasks'),
-                  _buildActionButton(Icons.money, 'Allowance'),
-                  _buildActionButton(Icons.shield, 'Restriction'),
-                  _buildActionButton(Icons.flag, 'Goals'),
+                  GestureDetector(
+                    onTap: () {
+                      context.push('/tasks');
+                    },
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.checklist, color: Colors.blue, size: 30),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Tasks',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AllowanceDialog();
+                        },
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.money, color: Colors.blue, size: 30),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Allowance',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      context.push('/restriction');
+                    },
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.shield, color: Colors.blue, size: 30),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Restriction',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      context.push('/goals');
+                    },
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.flag, color: Colors.blue, size: 30),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Goals',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -135,26 +230,6 @@ class ViewKidCard extends StatelessWidget {
           style: TextStyle(
             fontSize: 14,
             color: Colors.grey,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActionButton(IconData icon, String label) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: Colors.white,
-          child: Icon(icon, color: Colors.blue, size: 30),
-        ),
-        SizedBox(height: 8),
-        Text(
-          label,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 14,
           ),
         ),
       ],

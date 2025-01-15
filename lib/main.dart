@@ -1,7 +1,12 @@
+import 'package:bkid_frontend/pages/Allowance_page.dart';
 import 'package:bkid_frontend/pages/add_kid_page.dart';
+import 'package:bkid_frontend/pages/allowance_dialogue.dart';
+import 'package:bkid_frontend/pages/goals_page.dart';
 import 'package:bkid_frontend/pages/home_page.dart';
+import 'package:bkid_frontend/pages/restrictions_page.dart';
 import 'package:bkid_frontend/pages/signIn_page.dart';
 import 'package:bkid_frontend/pages/signUp_page.dart';
+import 'package:bkid_frontend/pages/tasks_page.dart';
 import 'package:bkid_frontend/pages/view_kidCard_page.dart';
 import 'package:bkid_frontend/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +52,22 @@ class MainApp extends StatelessWidget {
         GoRoute(
           path: '/view-kid',
           builder: (context, state) => ViewKidCard(kid: {},),
+        ),
+        GoRoute(
+          path: '/Restriction',
+          builder: (context, state) => RestrictionsPage(),
+        ),
+        GoRoute(
+          path: '/Goals',
+          builder: (context, state) => GoalsPage(),
+        ),
+        GoRoute(
+          path: '/Allowance',
+          builder: (context, state) => AllowanceDialog(),
+        ),
+        GoRoute(
+          path: '/Tasks',
+          builder: (context, state) => TasksPage(),
         ),
       ],
     );

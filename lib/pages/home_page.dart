@@ -1,6 +1,4 @@
-import 'package:bkid_frontend/main.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'view_kidCard_page.dart';
 
 void main() {
@@ -85,7 +83,7 @@ class DashboardPage extends StatelessWidget {
           Center(
             child: ElevatedButton.icon(
               onPressed: () {
-                context.push("/add-kid");
+                // Handle add new kid button press
               },
               icon: Icon(Icons.add),
               label: Text('Add new kid'),
