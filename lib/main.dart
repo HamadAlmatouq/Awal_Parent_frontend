@@ -1,3 +1,4 @@
+import 'package:bkid_frontend/pages/add_kid_page.dart';
 import 'package:bkid_frontend/pages/home_page.dart';
 import 'package:bkid_frontend/pages/signIn_page.dart';
 import 'package:bkid_frontend/pages/signUp_page.dart';
@@ -34,9 +35,13 @@ class MainApp extends StatelessWidget {
           path: '/signin',
           builder: (context, state) => SigninPage(),
         ),
+        // GoRoute(
+        //   path: '/home',
+        //   builder: (context, state) => DashboardPage(),
+        // ),
         GoRoute(
-          path: '/home',
-          builder: (context, state) => DashboardPage(),
+          path: '/add-kid',
+          builder: (context, state) => AddKidPage(),
         ),
       ],
     );

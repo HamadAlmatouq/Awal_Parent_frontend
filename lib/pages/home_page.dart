@@ -1,4 +1,7 @@
+import 'package:bkid_frontend/widgets/balance_Card.dart';
+import 'package:bkid_frontend/widgets/kid_Card.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Kids Dashboard',
+      title: '',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -23,7 +26,7 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF2575CC),
         elevation: 0,
         toolbarHeight: 0, // Hide the app bar 
       ),
@@ -31,7 +34,7 @@ class DashboardPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            color: Colors.blue,
+            color: Color(0xFF2575CC),
             padding: EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,6 +62,7 @@ class DashboardPage extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(height: 16),
           Expanded(
             child: ListView(
               children: getDummyKidsData()
@@ -69,139 +73,64 @@ class DashboardPage extends StatelessWidget {
                   .toList(),
             ),
           ),
-          AddNewKidButton(),
+              Center(
+                child: ElevatedButton.icon(
+                  
+                      onPressed: () {
+                        context.push("/add-kid");
+                        // Handle add new kid button press
+                      },
+
+                      icon: Icon(Icons.add),
+                      label: Text('Add new kid'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF2575CC), // Updated color
+                        foregroundColor: Colors.white, // Updated color
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+              )
+    // Container(
+    //   margin: EdgeInsets.all(16),
+    //   padding: EdgeInsets.symmetric(vertical: 16),
+    //   decoration: BoxDecoration(
+    //     border: Border.all(color: Color(0xFF2575CC)),
+    //     borderRadius: BorderRadius.circular(12),
+    //   ),
+    //   child: Row(
+    //     mainAxisAlignment: MainAxisAlignment.center,
+    //     children: [
+    //       Icon(
+    //         Icons.add,
+    //         color: Color(0xFF2575CC),
+    //       ),
+    //       SizedBox(width: 8),
+    //       Text(
+    //         'Add new kid',
+    //         style: TextStyle(
+    //           color: Color(0xFF2575CC),
+    //           fontSize: 16,
+    //           fontWeight: FontWeight.bold,
+    //         ),
+    //       ),
+    //     ],
+    //   ),
+    // )
         ],
       ),
     );
   }
 }
 
-class BalanceCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade300,
-            blurRadius: 6,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '1234 5678 9101 6789',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Icon(
-                Icons.notifications,
-                color: Colors.blue,
-              ),
-            ],
-          ),
-          SizedBox(height: 8),
-          Text(
-            'Balance',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
-            ),
-          ),
-          SizedBox(height: 4),
-          Text(
-            '152.030 KWD',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-            ),
-          ),
-        ],
-        
-      ),
-    );
-  }
-}
-
-
+// Dummy data for kid cards
 List<Map<String, dynamic>> getDummyKidsData() {
   return [
     {'name': 'Sagoor', 'balance': 23.980},
     {'name': 'Maymoona', 'balance': 25.500},
   ];
-}
-
-class KidCard extends StatelessWidget {
-  final String name;
-  final double balance;
-
-  KidCard({required this.name, required this.balance});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.blue,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 24,
-                backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.person,
-                  size: 24,
-                  color: Colors.blue,
-                ),
-              ),
-              SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    '$balance KWD',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Icon(
-            Icons.arrow_forward_ios,
-            color: Colors.white,
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class AddNewKidButton extends StatelessWidget {
@@ -211,7 +140,7 @@ class AddNewKidButton extends StatelessWidget {
       margin: EdgeInsets.all(16),
       padding: EdgeInsets.symmetric(vertical: 16),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.blue),
+        border: Border.all(color: Color(0xFF2575CC)),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -219,13 +148,13 @@ class AddNewKidButton extends StatelessWidget {
         children: [
           Icon(
             Icons.add,
-            color: Colors.blue,
+            color: Color(0xFF2575CC),
           ),
           SizedBox(width: 8),
           Text(
             'Add new kid',
             style: TextStyle(
-              color: Colors.blue,
+              color: Color(0xFF2575CC),
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),

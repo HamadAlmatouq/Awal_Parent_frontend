@@ -20,8 +20,8 @@ class SigninPage extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color.fromARGB(255, 56, 114, 248),
-              Color.fromARGB(255, 90, 97, 237),
+              const Color.fromARGB(207, 42, 148, 235),
+              Colors.grey,
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -38,7 +38,7 @@ class SigninPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -46,7 +46,7 @@ class SigninPage extends StatelessWidget {
                   "Sign in to your account",
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -91,7 +91,7 @@ class SigninPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                           ),
                           backgroundColor:
-                              const Color.fromARGB(255, 0, 136, 255),
+                              const Color.fromARGB(255, 0, 0, 0),
                         ),
                         onPressed: () async {
                           if (usernameController.text.isEmpty ||
@@ -141,3 +141,4 @@ class SigninPage extends StatelessWidget {
     );
   }
 }
+

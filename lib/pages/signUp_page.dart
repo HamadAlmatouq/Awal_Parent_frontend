@@ -21,8 +21,8 @@ class SignupPage extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color.fromARGB(255, 56, 114, 248),
-              Color.fromARGB(255, 90, 97, 237),
+              const Color.fromARGB(207, 42, 148, 235),
+              Colors.grey,
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -39,7 +39,7 @@ class SignupPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -47,7 +47,7 @@ class SignupPage extends StatelessWidget {
                   "Create your account",
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -107,7 +107,7 @@ class SignupPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                           ),
                           backgroundColor:
-                              const Color.fromARGB(255, 0, 136, 255),
+                              const Color.fromARGB(255, 0, 0, 0),
                         ),
                         onPressed: () async {
                           if (usernameController.text.isEmpty ||
@@ -140,7 +140,7 @@ class SignupPage extends StatelessWidget {
                               content: Text(
                                   "Sign up failed, please try again."),
                             ));
-                          }
+                          } 
                         },
                         child: const Text(
                           "Sign Up",
@@ -153,7 +153,7 @@ class SignupPage extends StatelessWidget {
                           context.push('/signin');
                         },
                         child: const Text("Already have an account? Sign in",
-                            style: TextStyle(color: Colors.blue)),
+                            style: TextStyle(color: Color.fromARGB(255, 219, 219, 219))),
                       ),
                     ],
                   ),
