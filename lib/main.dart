@@ -2,6 +2,7 @@ import 'package:bkid_frontend/pages/add_kid_page.dart';
 import 'package:bkid_frontend/pages/home_page.dart';
 import 'package:bkid_frontend/pages/signIn_page.dart';
 import 'package:bkid_frontend/pages/signUp_page.dart';
+import 'package:bkid_frontend/pages/view_kidCard_page.dart';
 import 'package:bkid_frontend/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -25,7 +26,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GoRouter router = GoRouter(
-      initialLocation: '/signup',
+      initialLocation: '/signin',
       routes: [
         GoRoute(
           path: '/signup',
@@ -35,13 +36,17 @@ class MainApp extends StatelessWidget {
           path: '/signin',
           builder: (context, state) => SigninPage(),
         ),
-        // GoRoute(
-        //   path: '/home',
-        //   builder: (context, state) => DashboardPage(),
-        // ),
+        GoRoute(
+          path: '/home',
+          builder: (context, state) => DashboardPage(),
+        ),
         GoRoute(
           path: '/add-kid',
           builder: (context, state) => AddKidPage(),
+        ),
+        GoRoute(
+          path: '/view-kid',
+          builder: (context, state) => ViewKidCard(kid: {},),
         ),
       ],
     );

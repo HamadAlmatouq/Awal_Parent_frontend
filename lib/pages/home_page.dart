@@ -1,7 +1,7 @@
-import 'package:bkid_frontend/widgets/balance_Card.dart';
-import 'package:bkid_frontend/widgets/kid_Card.dart';
+import 'package:bkid_frontend/main.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'view_kidCard_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,7 +28,7 @@ class DashboardPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Color(0xFF2575CC),
         elevation: 0,
-        toolbarHeight: 0, // Hide the app bar 
+        toolbarHeight: 0,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,70 +62,50 @@ class DashboardPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 16),
           Expanded(
             child: ListView(
               children: getDummyKidsData()
-                  .map((kid) => KidCard(
-                        name: kid['name'],
-                        balance: kid['balance'],
+                  .map((kid) => GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ViewKidCard(kid: kid),
+                            ),
+                          );
+                        },
+                        child: KidCard(
+                          name: kid['name'],
+                          balance: kid['balance'],
+                        ),
                       ))
                   .toList(),
             ),
           ),
-              Center(
-                child: ElevatedButton.icon(
-                  
-                      onPressed: () {
-                        context.push("/add-kid");
-                        // Handle add new kid button press
-                      },
-
-                      icon: Icon(Icons.add),
-                      label: Text('Add new kid'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF2575CC), // Updated color
-                        foregroundColor: Colors.white, // Updated color
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-              )
-    // Container(
-    //   margin: EdgeInsets.all(16),
-    //   padding: EdgeInsets.symmetric(vertical: 16),
-    //   decoration: BoxDecoration(
-    //     border: Border.all(color: Color(0xFF2575CC)),
-    //     borderRadius: BorderRadius.circular(12),
-    //   ),
-    //   child: Row(
-    //     mainAxisAlignment: MainAxisAlignment.center,
-    //     children: [
-    //       Icon(
-    //         Icons.add,
-    //         color: Color(0xFF2575CC),
-    //       ),
-    //       SizedBox(width: 8),
-    //       Text(
-    //         'Add new kid',
-    //         style: TextStyle(
-    //           color: Color(0xFF2575CC),
-    //           fontSize: 16,
-    //           fontWeight: FontWeight.bold,
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // )
+          Center(
+            child: ElevatedButton.icon(
+              onPressed: () {
+                context.push("/add-kid");
+              },
+              icon: Icon(Icons.add),
+              label: Text('Add new kid'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF2575CC),
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 16), // Add some spacing
         ],
       ),
     );
   }
 }
 
-// Dummy data for kid cards
 List<Map<String, dynamic>> getDummyKidsData() {
   return [
     {'name': 'Sagoor', 'balance': 23.980},
@@ -133,30 +113,120 @@ List<Map<String, dynamic>> getDummyKidsData() {
   ];
 }
 
-class AddNewKidButton extends StatelessWidget {
+class KidCard extends StatelessWidget {
+  final String name;
+  final double balance;
+
+  KidCard({required this.name, required this.balance});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(16),
-      padding: EdgeInsets.symmetric(vertical: 16),
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        border: Border.all(color: Color(0xFF2575CC)),
+        color: Color(0xFF2575CC),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(
-            Icons.add,
-            color: Color(0xFF2575CC),
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 24,
+                backgroundColor: Colors.white,
+                child: Icon(
+                  Icons.person,
+                  size: 24,
+                  color: Color(0xFF2575CC),
+                ),
+              ),
+              SizedBox(width: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    '$balance KWD',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          SizedBox(width: 8),
+          Icon(
+            Icons.arrow_forward_ios,
+            color: Colors.white,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class BalanceCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final dummyCardNumber = '1234 5678 9101 6789';
+    final dummyBalance = 152.030;
+
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade300,
+            blurRadius: 6,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                dummyCardNumber,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Icon(
+                Icons.notifications,
+                color: Color(0xFF2575CC),
+              ),
+            ],
+          ),
+          SizedBox(height: 8),
           Text(
-            'Add new kid',
+            'Balance',
             style: TextStyle(
-              color: Color(0xFF2575CC),
-              fontSize: 16,
+              fontSize: 14,
+              color: Colors.grey,
+            ),
+          ),
+          SizedBox(height: 4),
+          Text(
+            '$dummyBalance KWD',
+            style: TextStyle(
               fontWeight: FontWeight.bold,
+              fontSize: 24,
             ),
           ),
         ],
