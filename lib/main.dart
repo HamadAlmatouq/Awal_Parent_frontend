@@ -9,6 +9,7 @@ import 'package:bkid_frontend/pages/signUp_page.dart';
 import 'package:bkid_frontend/pages/tasks_page.dart';
 import 'package:bkid_frontend/pages/view_kidCard_page.dart';
 import 'package:bkid_frontend/providers/auth_provider.dart';
+import 'package:bkid_frontend/providers/kid_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
-        //Second provider
+        ChangeNotifierProvider(create: (_) => KidProvider()),
       ],
       child: MainApp(),
     ),

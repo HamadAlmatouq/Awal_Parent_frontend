@@ -1,4 +1,8 @@
+import 'package:bkid_frontend/main.dart';
+import 'package:bkid_frontend/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'view_kidCard_page.dart';
 
 void main() {
@@ -22,6 +26,9 @@ class MyApp extends StatelessWidget {
 class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    final user = authProvider.user;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF2575CC),
@@ -38,7 +45,7 @@ class DashboardPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Good Morning,\nHamad',
+                  'Good Morning,\n${user?.username ?? 'User'}',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -46,7 +53,7 @@ class DashboardPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 8),
-                BalanceCard(),
+                BalanceCard(balance: user?.balance ?? 0.0),
               ],
             ),
           ),
@@ -83,7 +90,7 @@ class DashboardPage extends StatelessWidget {
           Center(
             child: ElevatedButton.icon(
               onPressed: () {
-                // Handle add new kid button press
+                context.push("/add-kid");
               },
               icon: Icon(Icons.add),
               label: Text('Add new kid'),
@@ -175,10 +182,13 @@ class KidCard extends StatelessWidget {
 }
 
 class BalanceCard extends StatelessWidget {
+  final double balance;
+
+  BalanceCard({required this.balance});
+
   @override
   Widget build(BuildContext context) {
     final dummyCardNumber = '1234 5678 9101 6789';
-    final dummyBalance = 152.030;
 
     return Container(
       padding: EdgeInsets.all(16),
@@ -221,7 +231,7 @@ class BalanceCard extends StatelessWidget {
           ),
           SizedBox(height: 4),
           Text(
-            '$dummyBalance KWD',
+            '$balance KWD',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 24,

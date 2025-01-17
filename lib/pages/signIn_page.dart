@@ -11,126 +11,198 @@ class SigninPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Sign In"),
-        centerTitle: true,
-        elevation: 0,
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              const Color.fromARGB(207, 42, 148, 235),
-              Colors.grey,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      backgroundColor: const Color(0xFF2575CC),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
-                  "Awal",
+                const SizedBox(height: 120),
+                // Logo
+                Text(
+                  'awal.',
                   style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
                     color: Colors.white,
+                    fontSize: 128,
+                    fontFamily: 'Jua',
+                    letterSpacing: -0.23,
+                    height: 0.16,
                   ),
                 ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Sign in to your account",
+                const SizedBox(height: 60),
+                Text(
+                  "Your child's future starts here",
                   style: TextStyle(
-                    fontSize: 18,
                     color: Colors.white,
+                    fontSize: 20,
+                    fontFamily: 'Jua',
+                    letterSpacing: -0.23,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  'log in with burgan account',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontFamily: 'Jua',
+                    letterSpacing: -0.23,
                   ),
                 ),
                 const SizedBox(height: 40),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Username',
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    prefixIcon: const Icon(Icons.person),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
+
+                // Username Field
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Username',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontFamily: 'Inter',
+                        letterSpacing: -0.23,
+                      ),
                     ),
-                  ),
-                  controller: usernameController,
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    prefixIcon: const Icon(Icons.lock),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  controller: passwordController,
-                  obscureText: true,
-                ),
-                const SizedBox(height: 30),
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.only(
-                              top: 20, bottom: 20, left: 30, right: 30),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
+                    const SizedBox(height: 8),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.white),
+                      ),
+                      child: TextField(
+                        controller: usernameController,
+                        decoration: InputDecoration(
+                          hintText: 'Username...',
+                          hintStyle: TextStyle(
+                            color: Color(0xFFA9A9A9),
+                            fontSize: 15,
+                            fontFamily: 'Inter',
+                            letterSpacing: -0.23,
                           ),
-                          backgroundColor:
-                              const Color.fromARGB(255, 0, 0, 0),
-                        ),
-                        onPressed: () async {
-                          if (usernameController.text.isEmpty ||
-                              passwordController.text.isEmpty) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: Text("Please fill in all fields"),
-                            ));
-                            return;
-                          }
-                          var result = await Provider.of<AuthProvider>(context,
-                                  listen: false)
-                              .signin(
-                                  username: usernameController.text,
-                                  password: passwordController.text);
-                          if (result) {
-                            context.go("/home");
-                          } else {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: Text(
-                                  "Invalid credentials, please try again."),
-                            ));
-                          }
-                        },
-                        child: const Text(
-                          "Sign In",
-                          style: TextStyle(fontSize: 22, color: Colors.white),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                          border: InputBorder.none,
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      TextButton(
-                        onPressed: () {
-                          context.push('/signup');
-                        },
-                        child: const Text("Don't have an account? Sign up",
-                            style: TextStyle(color: Colors.blue)),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+
+                // Password Field
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Password',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontFamily: 'Inter',
+                        letterSpacing: -0.23,
                       ),
-                    ],
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.white),
+                      ),
+                      child: TextField(
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: 'Password...',
+                          hintStyle: TextStyle(
+                            color: Color(0xFFA9A9A9),
+                            fontSize: 15,
+                            fontFamily: 'Inter',
+                            letterSpacing: -0.23,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 100),
+
+                // Login Button
+                ElevatedButton(
+                  onPressed: () async {
+                    if (usernameController.text.isEmpty ||
+                        passwordController.text.isEmpty) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(const SnackBar(
+                        content: Text("Please fill in all fields"),
+                      ));
+                      return;
+                    }
+                    var result = await Provider.of<AuthProvider>(context,
+                            listen: false)
+                        .signin(
+                            username: usernameController.text,
+                            password: passwordController.text);
+                    if (result) {
+                      context.go("/home");
+                    } else {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(const SnackBar(
+                        content: Text("Invalid credentials, please try again."),
+                      ));
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    minimumSize: Size(double.infinity, 51),
+                  ),
+                  
+                  child: Text(
+                    'Login',
+                    style: TextStyle(
+                      color: Color(0xFF2575CC),
+                      fontSize: 24,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: -0.23,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Forget Password
+                TextButton(
+                  onPressed: () {
+                    
+                  },
+                  child: Text(
+                    'Forget password?',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontFamily: 'Inter',
+                      letterSpacing: -0.23,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Sign Up
+                TextButton(
+                  onPressed: () {
+                    context.push('/signup');
+                  },
+                  child: const Text(
+                    "Don't have an account? Sign up",
+                    style: TextStyle(color: Colors.blue),
                   ),
                 ),
               ],
@@ -141,4 +213,3 @@ class SigninPage extends StatelessWidget {
     );
   }
 }
-

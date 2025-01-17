@@ -1,4 +1,6 @@
+import 'package:bkid_frontend/providers/kid_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddKidPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -6,6 +8,7 @@ class AddKidPage extends StatelessWidget {
   final TextEditingController _civilIdController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -127,20 +130,58 @@ class AddKidPage extends StatelessWidget {
                       return null;
                     },
                   ),
+                  SizedBox(height: 16),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter the email';
+                      }
+                      if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
+                    },
+                  ),
                   SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        // Process data
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Processing Data')),
+                        var result = await Provider.of<KidProvider>(context,
+                                listen: false)
+                            .createKid(
+                          name: _nameController.text,
+                          civilId: _civilIdController.text,
+                          mobile: _mobileController.text,
+                          dob: _dobController.text,
+                          email: _emailController.text,
                         );
+                        if (result) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Kid created successfully')),
+                          );
+                          Navigator.pop(context);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Kid creation failed')),
+                          );
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF2575CC),
                       foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
