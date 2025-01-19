@@ -1,5 +1,6 @@
 import 'package:bkid_frontend/main.dart';
 import 'package:bkid_frontend/providers/auth_provider.dart';
+import 'package:bkid_frontend/providers/kid_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -12,21 +13,56 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: '',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => KidProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: '',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: DashboardPage(),
       ),
-      home: DashboardPage(),
     );
   }
 }
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends StatefulWidget {
+  @override
+  _DashboardPageState createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchKids();
+  }
+
+  Future<void> _fetchKids() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    await Provider.of<KidProvider>(context, listen: false)
+        .fetchKidsByParent(authProvider.token);
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  Future<void> _refreshKids() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    await Provider.of<KidProvider>(context, listen: false)
+        .fetchKidsByParent(authProvider.token);
+  }
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    final kidProvider = Provider.of<KidProvider>(context);
     final user = authProvider.user;
 
     return Scaffold(
@@ -68,24 +104,43 @@ class DashboardPage extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView(
-              children: getDummyKidsData()
-                  .map((kid) => GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ViewKidCard(kid: kid),
-                            ),
-                          );
-                        },
-                        child: KidCard(
-                          name: kid['name'],
-                          balance: kid['balance'],
-                        ),
-                      ))
-                  .toList(),
-            ),
+            child: _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : RefreshIndicator(
+                    onRefresh: _refreshKids,
+                    child: ListView(
+                      children: [
+                        ...kidProvider.kids.map((kid) => GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ViewKidCard(kid: kid),
+                                  ),
+                                );
+                              },
+                              child: KidCard(
+                                name: kid['Kname'],
+                                balance: (kid['balance'] as num).toDouble(),
+                              ),
+                            )),
+                        ...getDummyKidsData().map((kid) => GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ViewKidCard(kid: kid),
+                                  ),
+                                );
+                              },
+                              child: KidCard(
+                                name: kid['name'],
+                                balance: kid['balance'],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
           ),
           Center(
             child: ElevatedButton.icon(

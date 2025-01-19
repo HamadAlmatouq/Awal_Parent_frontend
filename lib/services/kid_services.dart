@@ -37,4 +37,31 @@ class KidServices {
       }
     }
   }
+
+  Future<List<Map<String, dynamic>>> getKidsByParent(String token) async {
+    try {
+      Response response = await Client.dio.get(
+        "/parent/getKidsByParent",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+      return List<Map<String, dynamic>>.from(response.data);
+    } catch (error) {
+      if (error is DioError) {
+        if (error.response != null) {
+          print("Get kids error response: ${error.response?.data}");
+          throw Exception(error.response?.data['message'] ?? 'Unknown error');
+        } else {
+          print("Get kids error: ${error.message}");
+          throw Exception(error.message);
+        }
+      } else {
+        print("Get kids error: $error");
+        throw Exception(error.toString());
+      }
+    }
+  }
 }

@@ -56,7 +56,7 @@ class ViewKidCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              kid['name'],
+                              kid['Kname'] ?? 'Unknown',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -80,10 +80,12 @@ class ViewKidCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        _buildInfoColumn('Balance',
+                            '${kid['balance'] ?? 0.0} KWD', Colors.blue),
+                        _buildInfoColumn('Savings',
+                            '${kid['savings'] ?? 0.0} KWD', Colors.blue),
                         _buildInfoColumn(
-                            'Balance', '${kid['balance']} KWD', Colors.blue),
-                        _buildInfoColumn('Savings', '33.870 KWD', Colors.blue),
-                        _buildInfoColumn('Steps', '2902', Colors.blue),
+                            'Steps', '${kid['steps'] ?? 0}', Colors.blue),
                       ],
                     ),
                   ],
@@ -104,7 +106,8 @@ class ViewKidCard extends StatelessWidget {
                         CircleAvatar(
                           radius: 30,
                           backgroundColor: Colors.white,
-                          child: Icon(Icons.checklist, color: Colors.blue, size: 30),
+                          child: Icon(Icons.checklist,
+                              color: Colors.blue, size: 30),
                         ),
                         SizedBox(height: 8),
                         Text(
@@ -131,7 +134,8 @@ class ViewKidCard extends StatelessWidget {
                         CircleAvatar(
                           radius: 30,
                           backgroundColor: Colors.white,
-                          child: Icon(Icons.money, color: Colors.blue, size: 30),
+                          child:
+                              Icon(Icons.money, color: Colors.blue, size: 30),
                         ),
                         SizedBox(height: 8),
                         Text(
@@ -153,7 +157,8 @@ class ViewKidCard extends StatelessWidget {
                         CircleAvatar(
                           radius: 30,
                           backgroundColor: Colors.white,
-                          child: Icon(Icons.shield, color: Colors.blue, size: 30),
+                          child:
+                              Icon(Icons.shield, color: Colors.blue, size: 30),
                         ),
                         SizedBox(height: 8),
                         Text(
