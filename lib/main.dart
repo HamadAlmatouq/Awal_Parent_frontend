@@ -119,7 +119,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GoRouter router = GoRouter(
-      initialLocation: '/goals-managing',
+      initialLocation: '/signin',
       routes: [
         GoRoute(
           path: '/signup',
