@@ -391,10 +391,10 @@ class MainApp extends StatelessWidget {
           path: '/home',
           builder: (context, state) => DashboardPage(),
         ),
-        GoRoute(
-          path: '/add-kid',
-          builder: (context, state) => AddKidPage(),
-        ),
+        // GoRoute(
+        //   path: '/add-kid',
+        //   builder: (context, state) => AddKidPage(),
+        // ),
         GoRoute(
           path: '/view-kid',
           builder: (context, state) => ViewKidCard(
