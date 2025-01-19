@@ -265,7 +265,7 @@
 //           builder: (context, state) => GoalsManagingScreen(),
 //         ),
 //         GoRoute(
-//           path: '/HomePage',
+//           path: '/Home',
 //           builder: (context, state) => AddGoalsDialog(),
 //         ),
 //       ],
@@ -337,7 +337,7 @@
 //     );
 //   }
 // }
-import 'package:bkid_frontend/batolPages/HomePage.dart';
+import 'package:bkid_frontend/batolPages/CreateKidPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
@@ -347,7 +347,7 @@ import 'package:bkid_frontend/pages/Allowance_page.dart';
 import 'package:bkid_frontend/pages/add_kid_page.dart';
 import 'package:bkid_frontend/pages/allowance_dialogue.dart';
 import 'package:bkid_frontend/pages/goals_page.dart';
-import 'package:bkid_frontend/pages/home_page.dart'; // Ensure this import is correct
+import 'package:bkid_frontend/pages/home_page.dart';
 import 'package:bkid_frontend/pages/restrictions_page.dart';
 import 'package:bkid_frontend/pages/signIn_page.dart';
 import 'package:bkid_frontend/pages/signUp_page.dart';
@@ -389,7 +389,7 @@ class MainApp extends StatelessWidget {
         ),
         GoRoute(
           path: '/home',
-          builder: (context, state) => HomePage(), // Route to HomePage
+          builder: (context, state) => DashboardPage(),
         ),
         GoRoute(
           path: '/add-kid',
@@ -422,8 +422,14 @@ class MainApp extends StatelessWidget {
           builder: (context, state) => GoalsManagingScreen(),
         ),
         GoRoute(
-          path: '/add-goals-dialog',
+          path: '/Home',
           builder: (context, state) => AddGoalsDialog(),
+        ),
+        // CreateKidPage Route
+        GoRoute(
+          path: '/create-kid',
+          builder: (context, state) =>
+              CreateKidPage(), // Your CreateKidPage route
         ),
       ],
     );
@@ -487,9 +493,10 @@ class DashboardPage extends StatelessWidget {
                 onPressed: () => context.go('/add-goals-dialog'),
                 child: Text('Add Goals Dialog'),
               ),
+              // Button to navigate to CreateKidPage
               ElevatedButton(
-                onPressed: () => context.go('/home'),
-                child: Text('Home Page'), // Button to test HomePage
+                onPressed: () => context.go('/create-kid'),
+                child: Text('Create Kid Page'), // Button for CreateKidPage
               ),
             ],
           ),
