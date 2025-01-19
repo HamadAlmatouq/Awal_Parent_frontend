@@ -220,12 +220,8 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GoRouter router = GoRouter(
-      initialLocation: '/goals-managing',
+      initialLocation: '/home', // Set DashboardPage as the initial page
       routes: [
-        GoRoute(
-          path: '/test-navigation',
-          builder: (context, state) => TestNavigationPage(),
-        ),
         GoRoute(
           path: '/signup',
           builder: (context, state) => SignupPage(),
@@ -282,58 +278,61 @@ class MainApp extends StatelessWidget {
   }
 }
 
-class TestNavigationPage extends StatelessWidget {
+class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Test Navigation')),
-      body: ListView(
-        children: [
-          ElevatedButton(
-            onPressed: () => context.go('/signup'),
-            child: Text('Signup Page'),
+      appBar: AppBar(
+        title: Text('Dashboard'),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () => context.go('/signup'),
+                child: Text('Signup Page'),
+              ),
+              ElevatedButton(
+                onPressed: () => context.go('/signin'),
+                child: Text('Signin Page'),
+              ),
+              ElevatedButton(
+                onPressed: () => context.go('/add-kid'),
+                child: Text('Add Kid Page'),
+              ),
+              ElevatedButton(
+                onPressed: () => context.go('/view-kid'),
+                child: Text('View Kid Card Page'),
+              ),
+              ElevatedButton(
+                onPressed: () => context.go('/Restriction'),
+                child: Text('Restrictions Page'),
+              ),
+              ElevatedButton(
+                onPressed: () => context.go('/Goals'),
+                child: Text('Goals Page'),
+              ),
+              ElevatedButton(
+                onPressed: () => context.go('/Allowance'),
+                child: Text('Allowance Dialog'),
+              ),
+              ElevatedButton(
+                onPressed: () => context.go('/Tasks'),
+                child: Text('Tasks Page'),
+              ),
+              ElevatedButton(
+                onPressed: () => context.go('/goals-managing'),
+                child: Text('Goals Managing Screen'),
+              ),
+              ElevatedButton(
+                onPressed: () => context.go('/add-goals-dialog'),
+                child: Text('Add Goals Dialog'),
+              ),
+            ],
           ),
-          ElevatedButton(
-            onPressed: () => context.go('/signin'),
-            child: Text('Signin Page'),
-          ),
-          ElevatedButton(
-            onPressed: () => context.go('/home'),
-            child: Text('Home Page'),
-          ),
-          ElevatedButton(
-            onPressed: () => context.go('/add-kid'),
-            child: Text('Add Kid Page'),
-          ),
-          ElevatedButton(
-            onPressed: () => context.go('/view-kid'),
-            child: Text('View Kid Card Page'),
-          ),
-          ElevatedButton(
-            onPressed: () => context.go('/Restriction'),
-            child: Text('Restrictions Page'),
-          ),
-          ElevatedButton(
-            onPressed: () => context.go('/Goals'),
-            child: Text('Goals Page'),
-          ),
-          ElevatedButton(
-            onPressed: () => context.go('/Allowance'),
-            child: Text('Allowance Dialog'),
-          ),
-          ElevatedButton(
-            onPressed: () => context.go('/Tasks'),
-            child: Text('Tasks Page'),
-          ),
-          ElevatedButton(
-            onPressed: () => context.go('/goals-managing'),
-            child: Text('Goals Managing Screen'),
-          ),
-          ElevatedButton(
-            onPressed: () => context.go('/add-goals-dialog'),
-            child: Text('Add Goals Dialog'),
-          ),
-        ],
+        ),
       ),
     );
   }
