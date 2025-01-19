@@ -702,7 +702,7 @@ import 'package:bkid_frontend/pages/add_kid_page.dart';
 import 'package:bkid_frontend/pages/allowance_dialogue.dart';
 import 'package:bkid_frontend/pages/goals_page.dart';
 import 'package:bkid_frontend/pages/restrictions_page.dart';
-import 'package:bkid_frontend/pages/signIn_page.dart';
+import 'package:bkid_frontend/batolPages/signIn_page.dart';
 import 'package:bkid_frontend/pages/signUp_page.dart';
 import 'package:bkid_frontend/pages/tasks_page.dart';
 import 'package:bkid_frontend/pages/view_kidCard_page.dart';
