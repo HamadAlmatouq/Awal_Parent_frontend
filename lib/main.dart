@@ -265,7 +265,7 @@ class MainApp extends StatelessWidget {
           builder: (context, state) => GoalsManagingScreen(),
         ),
         GoRoute(
-          path: '/add-goals-dialog',
+          path: '/HomePage',
           builder: (context, state) => AddGoalsDialog(),
         ),
       ],
