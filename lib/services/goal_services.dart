@@ -48,6 +48,29 @@ class GoalServices {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getGoalsByKidName(String kidName) async {
+    try {
+      Response response = await Client.dio.get(
+        "/parent/getGoalsByKidName",
+        queryParameters: {"Kname": kidName},
+      );
+      return List<Map<String, dynamic>>.from(response.data);
+    } catch (error) {
+      if (error is DioError) {
+        if (error.response != null) {
+          print("Get goals error response: ${error.response?.data}");
+          throw Exception(error.response?.data['message'] ?? 'Unknown error');
+        } else {
+          print("Get goals error: ${error.message}");
+          throw Exception(error.message);
+        }
+      } else {
+        print("Get goals error: $error");
+        throw Exception(error.toString());
+      }
+    }
+  }
+
   Future<void> deleteGoal(String goalId) async {
     try {
       Response response = await Client.dio.delete(

@@ -23,7 +23,7 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
 
   void fetchGoals() async {
     try {
-      goals = await GoalServices().getGoals(widget.kidName);
+      goals = await GoalServices().getGoalsByKidName(widget.kidName);
       setState(() {});
     } catch (e) {
       print("Error fetching goals: $e");
@@ -58,7 +58,11 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
     }
   }
 
-  void deleteGoal(String goalId) async {
+  void deleteGoal(String? goalId) async {
+    if (goalId == null) {
+      print("Error: goalId is null");
+      return;
+    }
     try {
       await GoalServices().deleteGoal(goalId);
       fetchGoals(); // Refresh the goals list
@@ -261,7 +265,7 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
                                   return SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
                                     child: GoalItem(
-                                      goalId: goal['id'],
+                                      goalId: goal['id'] as String?,
                                       goalName: goal['title'],
                                       amount: goal['amount'],
                                       endDate: goal['endDate'],
@@ -270,7 +274,8 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
                                           goal['amount'] = newAmount;
                                         });
                                       },
-                                      onDelete: () => deleteGoal(goal['id']),
+                                      onDelete: () =>
+                                          deleteGoal(goal['id'] as String?),
                                     ),
                                   );
                                 },
@@ -294,7 +299,7 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
 }
 
 class GoalItem extends StatelessWidget {
-  final String goalId;
+  final String? goalId;
   final String goalName;
   final int amount;
   final String endDate;
