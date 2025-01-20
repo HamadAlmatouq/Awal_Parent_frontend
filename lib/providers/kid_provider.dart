@@ -33,6 +33,7 @@ class KidProvider extends ChangeNotifier {
     try {
       if (token != null) {
         _kids = await KidServices().getKidsByParent(token);
+        // No need to fetch balance, savings, and steps separately
       } else {
         // Handle case where token is not provided
         print("Token is required to fetch kids");

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 class BalanceCard extends StatelessWidget {
+  final double balance;
+
+  BalanceCard({required this.balance});
+
   @override
   Widget build(BuildContext context) {
     final dummyCardNumber = '1234 5678 9101 6789';
-    final dummyBalance = 152.030;
 
     return Container(
       padding: EdgeInsets.all(16),
@@ -47,7 +50,7 @@ class BalanceCard extends StatelessWidget {
           ),
           SizedBox(height: 4),
           Text(
-            '$dummyBalance KWD',
+            '$balance KWD',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 24,
@@ -58,4 +61,3 @@ class BalanceCard extends StatelessWidget {
     );
   }
 }
-

@@ -1,6 +1,8 @@
 import 'package:bkid_frontend/main.dart';
 import 'package:bkid_frontend/providers/auth_provider.dart';
 import 'package:bkid_frontend/providers/kid_provider.dart';
+import 'package:bkid_frontend/widgets/balance_card.dart';
+import 'package:bkid_frontend/widgets/kid_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +31,13 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+const Color backgroundColor = Color(0xFF2575CC);
+const Color cardBackgroundColor = Color(0xFFFFFFFF);
+const Color blueCardColor = Color(0xFF2575CC);
+const Color dottedCardColor = Color(0xFFACCBEB);
+const Color whiteTextColor = Color(0xFFFFFFFF);
+const Color blueTextColor = Color(0xFF2575CC);
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -66,101 +75,188 @@ class _DashboardPageState extends State<DashboardPage> {
     final user = authProvider.user;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF2575CC),
-        elevation: 0,
-        toolbarHeight: 0,
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            color: Color(0xFF2575CC),
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Good Morning,\n${user?.username ?? 'User'}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+      backgroundColor: backgroundColor,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Good Morning,\n${user?.username ?? 'User'}',
+                        style: TextStyle(
+                          color: whiteTextColor,
+                          fontSize: 18.0,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                SizedBox(height: 8),
-                BalanceCard(balance: user?.balance ?? 0.0),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              'My Kids',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+                  IconButton(
+                    icon: Icon(Icons.notifications,
+                        color: whiteTextColor, size: 24.0),
+                    onPressed: () {
+                      // Handle notification icon tap
+                      print('Notification icon tapped!');
+                    },
+                  ),
+                ],
               ),
-            ),
-          ),
-          Expanded(
-            child: _isLoading
-                ? Center(child: CircularProgressIndicator())
-                : RefreshIndicator(
-                    onRefresh: _refreshKids,
-                    child: ListView(
-                      children: [
-                        ...kidProvider.kids.map((kid) => GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ViewKidCard(kid: kid),
-                                  ),
-                                );
-                              },
-                              child: KidCard(
-                                name: kid['Kname'],
-                                balance: (kid['balance'] as num).toDouble(),
-                              ),
-                            )),
-                        ...getDummyKidsData().map((kid) => GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ViewKidCard(kid: kid),
-                                  ),
-                                );
-                              },
-                              child: KidCard(
-                                name: kid['name'],
-                                balance: kid['balance'],
-                              ),
-                            )),
-                      ],
+              SizedBox(height: 20.0),
+              // First card for the main balance information
+              BalanceCard(balance: user?.balance ?? 0.0),
+              SizedBox(height: 20.0),
+
+              // Clickable card for the transfer action
+              InkWell(
+                onTap: () {
+                  // Handle transfer card tap
+                  print('Transfer card tapped!');
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(15.0),
+                  decoration: BoxDecoration(
+                    color: cardBackgroundColor.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(25.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 5.0,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Transfer',
+                      style: TextStyle(
+                        color: whiteTextColor,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-          ),
-          Center(
-            child: ElevatedButton.icon(
-              onPressed: () {
-                context.push("/add-kid");
-              },
-              icon: Icon(Icons.add),
-              label: Text('Add new kid'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF2575CC),
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
                 ),
               ),
-            ),
+
+              // Third card for the kids' cards and the add kid button
+              Text(
+                'My Kids',
+                style: TextStyle(
+                  color: whiteTextColor,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 10.0),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(15.0),
+                  decoration: BoxDecoration(
+                    color: cardBackgroundColor.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
+                  child: _isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : RefreshIndicator(
+                          onRefresh: _refreshKids,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                ...kidProvider.kids.map((kid) =>
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ViewKidCard(
+                                              kid: {
+                                                'savings':
+                                                    (kid['savings'] as num)
+                                                        .toDouble(),
+                                                'steps': kid['steps'] as int,
+                                              },
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: KidCard(
+                                        name: kid['Kname'],
+                                        balance:
+                                            (kid['balance'] as num).toDouble(),
+                                        savings:
+                                            (kid['savings'] as num).toDouble(),
+                                        steps: kid['steps'] as int,
+                                        image: 'assets/kid_image.png',
+                                      ),
+                                    )),
+                                SizedBox(height: 15.0),
+                                ...getDummyKidsData()
+                                    .map((kid) => GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ViewKidCard(
+                                                  kid: {
+                                                    'Kname': kid['name'],
+                                                    'balance': kid['balance'],
+                                                    'savings': 0.0,
+                                                    'steps': 0,
+                                                  },
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: KidCard(
+                                            name: kid['name'],
+                                            balance: kid['balance'],
+                                            savings: 0.0,
+                                            steps: 0,
+                                            image: 'assets/kid_image.png',
+                                          ),
+                                        )),
+                                SizedBox(height: 20.0),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: dottedCardColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 15.0),
+                                  ),
+                                  onPressed: () {
+                                    context.push("/add-kid");
+                                  },
+                                  child: Center(
+                                    child: Text(
+                                      '+ Add new kid',
+                                      style: TextStyle(
+                                        color: whiteTextColor,
+                                        fontSize: 16.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 16), // Add some spacing
-        ],
+        ),
       ),
     );
   }
@@ -171,129 +267,4 @@ List<Map<String, dynamic>> getDummyKidsData() {
     {'name': 'Sagoor', 'balance': 23.980},
     {'name': 'Maymoona', 'balance': 25.500},
   ];
-}
-
-class KidCard extends StatelessWidget {
-  final String name;
-  final double balance;
-
-  KidCard({required this.name, required this.balance});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Color(0xFF2575CC),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 24,
-                backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.person,
-                  size: 24,
-                  color: Color(0xFF2575CC),
-                ),
-              ),
-              SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    '$balance KWD',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Icon(
-            Icons.arrow_forward_ios,
-            color: Colors.white,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class BalanceCard extends StatelessWidget {
-  final double balance;
-
-  BalanceCard({required this.balance});
-
-  @override
-  Widget build(BuildContext context) {
-    final dummyCardNumber = '1234 5678 9101 6789';
-
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade300,
-            blurRadius: 6,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                dummyCardNumber,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Icon(
-                Icons.notifications,
-                color: Color(0xFF2575CC),
-              ),
-            ],
-          ),
-          SizedBox(height: 8),
-          Text(
-            'Balance',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
-            ),
-          ),
-          SizedBox(height: 4),
-          Text(
-            '$balance KWD',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
