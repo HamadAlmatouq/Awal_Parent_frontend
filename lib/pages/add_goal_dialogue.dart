@@ -10,20 +10,23 @@ class AddGoalsDialog extends StatefulWidget {
 class _AddGoalsDialogState extends State<AddGoalsDialog> {
   final TextEditingController goalNameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
+  final TextEditingController endDateController = TextEditingController();
   String? errorMessage;
 
   void handleSubmit() {
     final goalName = goalNameController.text.trim();
     final priceText = priceController.text.trim();
+    final endDate = endDateController.text.trim();
 
-    if (goalName.isEmpty || priceText.isEmpty) {
+    if (goalName.isEmpty || priceText.isEmpty || endDate.isEmpty) {
       setState(() {
         errorMessage = 'Please fill in all fields.';
       });
     } else {
       Navigator.pop(context, {
-        'name': goalName,
+        'title': goalName, // Change 'name' to 'title'
         'amount': int.tryParse(priceText) ?? 0,
+        'endDate': endDate,
       });
     }
   }
@@ -137,6 +140,34 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
                 ),
                 keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'End Date',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontFamily: 'Inter',
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: endDateController,
+                decoration: InputDecoration(
+                  hintText: 'YYYY-MM-DD',
+                  hintStyle: const TextStyle(
+                    color: Color(0xFFC3C3C3),
+                    fontSize: 14,
+                    fontFamily: 'Inter',
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: Color(0xFFD3CDCD)),
+                  ),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+                ),
+                keyboardType: TextInputType.datetime,
               ),
               if (errorMessage != null) ...[
                 const SizedBox(height: 8),

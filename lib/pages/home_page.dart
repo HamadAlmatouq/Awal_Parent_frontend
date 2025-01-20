@@ -199,11 +199,10 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                   SizedBox(height: 20.0),
 
-                  // Clickable card for the transfer action
+                  //Transfer card
                   InkWell(
                     onTap: () {
-                      // Handle transfer card tap
-                      print('Transfer card tapped!');
+                    //TODO add a dialogue for transfer
                     },
                     child: Container(
                       width: double.infinity,

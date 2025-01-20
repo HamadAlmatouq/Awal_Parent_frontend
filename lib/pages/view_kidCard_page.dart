@@ -48,7 +48,6 @@ class ViewKidCard extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 30,
-                          
                           backgroundImage: AssetImage('assets/kid_image.png'),
                         ),
                         SizedBox(width: 16),
@@ -173,7 +172,7 @@ class ViewKidCard extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      context.push('/goals');
+                      context.push('/goals', extra: kid['Kname']);
                     },
                     child: Column(
                       children: [

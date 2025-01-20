@@ -1,4 +1,3 @@
-import 'package:bkid_frontend/pages/Allowance_page.dart';
 import 'package:bkid_frontend/pages/add_kid_page.dart';
 import 'package:bkid_frontend/pages/allowance_dialogue.dart';
 import 'package:bkid_frontend/pages/goals_page.dart';
@@ -52,7 +51,9 @@ class MainApp extends StatelessWidget {
         ),
         GoRoute(
           path: '/view-kid',
-          builder: (context, state) => ViewKidCard(kid: {},),
+          builder: (context, state) => ViewKidCard(
+            kid: {},
+          ),
         ),
         GoRoute(
           path: '/Restriction',
@@ -60,7 +61,8 @@ class MainApp extends StatelessWidget {
         ),
         GoRoute(
           path: '/Goals',
-          builder: (context, state) => GoalsManagingScreen(),
+          builder: (context, state) =>
+              GoalsManagingScreen(kidName: state.extra as String),
         ),
         GoRoute(
           path: '/Allowance',

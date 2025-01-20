@@ -1,17 +1,37 @@
 import 'package:bkid_frontend/pages/add_goal_dialogue.dart';
+import 'package:bkid_frontend/services/goal_services.dart';
 import 'package:flutter/material.dart';
 
 class GoalsManagingScreen extends StatefulWidget {
+  final String kidName;
+
+  GoalsManagingScreen({required this.kidName});
+
   @override
   _GoalsManagingScreenState createState() => _GoalsManagingScreenState();
 }
 
 class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
   bool isInProgress = true;
-  List<Map<String, dynamic>> goals = [
-    {'name': 'Rare Blush', 'amount': 35},
-    {'name': 'Rare Blush', 'amount': 35},
-  ];
+  List<Map<String, dynamic>> goals = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchGoals();
+  }
+
+  void fetchGoals() async {
+    try {
+      goals = await GoalServices().getGoals(widget.kidName);
+      setState(() {});
+    } catch (e) {
+      print("Error fetching goals: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error fetching goals: $e')),
+      );
+    }
+  }
 
   void addGoal() async {
     final newGoal = await showDialog<Map<String, dynamic>>(
@@ -22,16 +42,32 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
     );
 
     if (newGoal != null) {
-      setState(() {
-        goals.add(newGoal);
-      });
+      newGoal['Kname'] = widget.kidName;
+      if (newGoal.containsKey('name')) {
+        newGoal['title'] = newGoal.remove('name'); // Rename 'name' to 'title'
+      }
+      try {
+        await GoalServices().createGoal(newGoal);
+        fetchGoals(); // Refresh the goals list
+      } catch (e) {
+        print("Error creating goal: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error creating goal: $e')),
+        );
+      }
     }
   }
 
-  void deleteGoal(int index) {
-    setState(() {
-      goals.removeAt(index);
-    });
+  void deleteGoal(String goalId) async {
+    try {
+      await GoalServices().deleteGoal(goalId);
+      fetchGoals(); // Refresh the goals list
+    } catch (e) {
+      print("Error deleting goal: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error deleting goal: $e')),
+      );
+    }
   }
 
   @override
@@ -205,7 +241,7 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
                                     Container(
                                       width: 100,
                                       child: Text(
-                                        'Image',
+                                        'End Date',
                                         style: TextStyle(
                                           color: Color(0xFF2575CC),
                                           fontSize: 15,
@@ -225,14 +261,16 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
                                   return SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
                                     child: GoalItem(
-                                      goalName: goal['name'],
+                                      goalId: goal['id'],
+                                      goalName: goal['title'],
                                       amount: goal['amount'],
+                                      endDate: goal['endDate'],
                                       onAmountChanged: (newAmount) {
                                         setState(() {
                                           goal['amount'] = newAmount;
                                         });
                                       },
-                                      onDelete: () => deleteGoal(index),
+                                      onDelete: () => deleteGoal(goal['id']),
                                     ),
                                   );
                                 },
@@ -256,15 +294,19 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
 }
 
 class GoalItem extends StatelessWidget {
+  final String goalId;
   final String goalName;
   final int amount;
+  final String endDate;
   final ValueChanged<int> onAmountChanged;
   final VoidCallback onDelete;
 
   const GoalItem({
     Key? key,
+    required this.goalId,
     required this.goalName,
     required this.amount,
+    required this.endDate,
     required this.onAmountChanged,
     required this.onDelete,
   }) : super(key: key);
@@ -321,26 +363,24 @@ class GoalItem extends StatelessWidget {
           Container(
             width: 100,
             height: 48,
-            child: Row(
-              children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Image.network(
-                    'https://dashboard.codeparrot.ai/api/assets/Z4oyQBgaGNOSvOa1', // Default image
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                IconButton(
-                  icon: Image.network(
-                      'https://dashboard.codeparrot.ai/api/assets/Z4oy1RgaGNOSvOa7'),
-                  onPressed: onDelete,
-                ),
-              ],
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+              border: Border.all(color: Color(0xFF2575CC)),
+              borderRadius: BorderRadius.circular(8),
             ),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              endDate,
+              style: TextStyle(
+                color: Color(0xFF2575CC).withOpacity(0.5),
+                fontSize: 14,
+              ),
+            ),
+          ),
+          SizedBox(width: 8),
+          IconButton(
+            icon: Icon(Icons.delete, color: Colors.red),
+            onPressed: onDelete,
           ),
         ],
       ),
@@ -376,11 +416,7 @@ class AddGoalButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.network(
-                'https://dashboard.codeparrot.ai/api/assets/Z4oyQBgaGNOSvOa2',
-                width: 24,
-                height: 24,
-              ),
+              Icon(Icons.add, color: Color(0xFF2575CC)),
               const SizedBox(width: 8),
               const Text(
                 'Add Goal',
