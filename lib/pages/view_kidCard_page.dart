@@ -48,8 +48,8 @@ class ViewKidCard extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 30,
-                          // Replace with image of the kid
-                          backgroundImage: AssetImage('assets/a.png'),
+                          
+                          backgroundImage: AssetImage('assets/kid_image.png'),
                         ),
                         SizedBox(width: 16),
                         Column(
