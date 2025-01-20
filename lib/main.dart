@@ -32,7 +32,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GoRouter router = GoRouter(
-      initialLocation: '/signin',
+      initialLocation: '/Goals',
       routes: [
         GoRoute(
           path: '/signup',
@@ -60,7 +60,7 @@ class MainApp extends StatelessWidget {
         ),
         GoRoute(
           path: '/Goals',
-          builder: (context, state) => GoalsPage(),
+          builder: (context, state) => GoalsManagingScreen(),
         ),
         GoRoute(
           path: '/Allowance',
