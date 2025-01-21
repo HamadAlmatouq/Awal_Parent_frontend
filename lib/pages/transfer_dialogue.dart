@@ -1,37 +1,36 @@
-import 'package:bkid_frontend/services/allowance_services.dart';
+import 'package:bkid_frontend/services/transfer_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:bkid_frontend/providers/kid_provider.dart';
 
-class AllowanceDialog extends StatefulWidget {
-  final String kidName;
-
-  const AllowanceDialog({Key? key, required this.kidName}) : super(key: key);
+class TransferDialog extends StatefulWidget {
+  const TransferDialog({Key? key}) : super(key: key);
 
   @override
-  _AllowanceDialogState createState() => _AllowanceDialogState();
+  _TransferDialogState createState() => _TransferDialogState();
 }
 
-class _AllowanceDialogState extends State<AllowanceDialog> {
+class _TransferDialogState extends State<TransferDialog> {
   final TextEditingController amountController = TextEditingController();
-  String? selectedFrequency;
+  String? selectedKid;
   String? errorMessage;
 
   void handleSubmit() async {
     final amountText = amountController.text.trim();
 
-    if (amountText.isEmpty || selectedFrequency == null) {
+    if (amountText.isEmpty || selectedKid == null) {
       setState(() {
         errorMessage = 'Please fill in all fields.';
       });
     } else {
-      final allowanceData = {
+      final transferData = {
         'amount': int.tryParse(amountText) ?? 0,
-        'frequency': selectedFrequency,
-        'Kname': widget.kidName,
+        'Kname': selectedKid,
       };
 
       try {
-        await AllowanceServices().createAllowance(allowanceData);
-        Navigator.pop(context, allowanceData);
+        await TransferServices().createTransfer(transferData);
+        Navigator.pop(context, transferData);
       } catch (e) {
         setState(() {
           errorMessage = e.toString();
@@ -42,6 +41,9 @@ class _AllowanceDialogState extends State<AllowanceDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final kidProvider = Provider.of<KidProvider>(context);
+    final kids = kidProvider.kids.map((kid) => kid['Kname'] as String).toList();
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25),
@@ -65,7 +67,7 @@ class _AllowanceDialogState extends State<AllowanceDialog> {
                   ),
                   const SizedBox(width: 80),
                   const Text(
-                    'Allowance',
+                    'Transfer',
                     style: TextStyle(
                       fontSize: 24,
                       fontFamily: 'Inter',
@@ -111,7 +113,7 @@ class _AllowanceDialogState extends State<AllowanceDialog> {
               ),
               const SizedBox(height: 16),
               const Text(
-                'Frequency',
+                'Select Kid',
                 style: TextStyle(
                   fontSize: 18,
                   fontFamily: 'Inter',
@@ -120,20 +122,20 @@ class _AllowanceDialogState extends State<AllowanceDialog> {
               ),
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
-                value: selectedFrequency,
-                items: ['daily', 'weekly', 'monthly']
-                    .map((frequency) => DropdownMenuItem(
-                          value: frequency,
-                          child: Text(frequency),
+                value: selectedKid,
+                items: kids
+                    .map((kid) => DropdownMenuItem<String>(
+                          value: kid,
+                          child: Text(kid),
                         ))
                     .toList(),
                 onChanged: (value) {
                   setState(() {
-                    selectedFrequency = value;
+                    selectedKid = value;
                   });
                 },
                 decoration: InputDecoration(
-                  hintText: 'Select frequency...',
+                  hintText: 'Select kid...',
                   hintStyle: const TextStyle(
                     color: Color(0xFFC3C3C3),
                     fontSize: 14,
@@ -173,7 +175,7 @@ class _AllowanceDialogState extends State<AllowanceDialog> {
                     ),
                   ),
                   child: const Text(
-                    'Save',
+                    'Transfer',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,

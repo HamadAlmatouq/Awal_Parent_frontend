@@ -1,4 +1,5 @@
 import 'package:bkid_frontend/main.dart';
+import 'package:bkid_frontend/pages/transfer_dialogue.dart';
 import 'package:bkid_frontend/providers/auth_provider.dart';
 import 'package:bkid_frontend/providers/kid_provider.dart';
 import 'package:bkid_frontend/widgets/balance_card.dart';
@@ -200,9 +201,14 @@ class _DashboardPageState extends State<DashboardPage> {
                 SizedBox(height: 20.0),
 
                 //Transfer card
-                InkWell(
+                GestureDetector(
                   onTap: () {
                     //TODO add a dialogue for transfer
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return TransferDialog();
+                        });
                   },
                   child: Container(
                     width: double.infinity,

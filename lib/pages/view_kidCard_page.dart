@@ -124,7 +124,7 @@ class ViewKidCard extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return AllowanceDialog();
+                          return AllowanceDialog(kidName: kid['Kname']);
                         },
                       );
                     },

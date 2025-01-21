@@ -7,6 +7,7 @@ import 'package:bkid_frontend/pages/signIn_page.dart';
 import 'package:bkid_frontend/pages/signUp_page.dart';
 import 'package:bkid_frontend/pages/tasks_page.dart';
 import 'package:bkid_frontend/pages/view_kidCard_page.dart';
+import 'package:bkid_frontend/pages/transfer_dialogue.dart';
 import 'package:bkid_frontend/providers/auth_provider.dart';
 import 'package:bkid_frontend/providers/kid_provider.dart';
 import 'package:flutter/material.dart';
@@ -68,13 +69,20 @@ class MainApp extends StatelessWidget {
         ),
         GoRoute(
           path: '/Allowance',
-          builder: (context, state) => AllowanceDialog(),
+          builder: (context, state) {
+            final kid = state.extra as Map<String, dynamic>;
+            return AllowanceDialog(kidName: kid['Kname']);
+          },
         ),
         GoRoute(
           path: '/Tasks',
           builder: (context, state) => CreateTaskScreen(
             kidName: state.extra as String? ?? '',
           ),
+        ),
+        GoRoute(
+          path: '/Transfer',
+          builder: (context, state) => TransferDialog(),
         ),
       ],
     );
