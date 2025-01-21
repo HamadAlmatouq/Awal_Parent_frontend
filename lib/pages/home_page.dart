@@ -51,10 +51,10 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
-    _fetchKids();
+    _fetchInitialData();
   }
 
-  Future<void> _fetchKids() async {
+  Future<void> _fetchInitialData() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     await Provider.of<KidProvider>(context, listen: false)
         .fetchKidsByParent(authProvider.token);
@@ -63,7 +63,7 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 
-  Future<void> _refreshKids() async {
+  Future<void> _refreshData() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     await Provider.of<KidProvider>(context, listen: false)
         .fetchKidsByParent(authProvider.token);
@@ -78,7 +78,7 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       backgroundColor: backgroundColor,
       body: RefreshIndicator(
-        onRefresh: _refreshKids,
+        onRefresh: _refreshData,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
@@ -188,9 +188,9 @@ class _DashboardPageState extends State<DashboardPage> {
                               ),
                             ),
                             child: CircleAvatar(
-                              backgroundImage:
-                                  AssetImage('assets/your_image.png'),
+                              backgroundImage: AssetImage('assets/images.png'),
                               radius: 40.0,
+                              backgroundColor: Colors.transparent,
                             ),
                           ),
                         ),
@@ -282,7 +282,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                     balance: (kid['balance'] as num).toDouble(),
                                     savings: (kid['savings'] as num).toDouble(),
                                     steps: kid['steps'] as int,
-                                    image: 'assets/kid_image.png',
+                                    image: 'assets/images.png',
                                   ),
                                 )),
                             SizedBox(height: 20.0),

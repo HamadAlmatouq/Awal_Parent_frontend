@@ -55,6 +55,7 @@ class KidCard extends StatelessWidget {
               child: CircleAvatar(
                 backgroundImage: AssetImage(image),
                 radius: 25.0,
+                backgroundColor: Colors.transparent,
               ),
             ),
             SizedBox(width: 15.0),

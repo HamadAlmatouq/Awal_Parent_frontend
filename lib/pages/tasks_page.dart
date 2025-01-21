@@ -65,22 +65,76 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   }
 
   Future<void> deleteTask(String title) async {
-    if (title.isEmpty || widget.kidName.isEmpty) {
-      print('Error: title or Kname is empty');
-      return;
-    }
+    // Show confirmation dialog
+    bool? confirmDelete = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: Text(
+            'Delete Task',
+            style: TextStyle(
+              color: Color(0xFF2575CC),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to delete this task?',
+            style: TextStyle(
+              color: Colors.black87,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(
+                'Delete',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
 
-    try {
-      print('Deleting task with title: $title and Kname: ${widget.kidName}');
-      await TaskServices().deleteTask(title, widget.kidName);
-      setState(() {
-        inProgressTasks.removeWhere((task) =>
-            task['title'] == title && task['Kname'] == widget.kidName);
-        doneTasks.removeWhere((task) =>
-            task['title'] == title && task['Kname'] == widget.kidName);
-      });
-    } catch (e) {
-      print('Error deleting task: $e');
+    if (confirmDelete == true) {
+      if (title.isEmpty || widget.kidName.isEmpty) {
+        print('Error: title or Kname is empty');
+        return;
+      }
+
+      try {
+        print('Deleting task with title: $title and Kname: ${widget.kidName}');
+        await TaskServices().deleteTask(title, widget.kidName);
+        setState(() {
+          inProgressTasks.removeWhere((task) =>
+              task['title'] == title && task['Kname'] == widget.kidName);
+          doneTasks.removeWhere((task) =>
+              task['title'] == title && task['Kname'] == widget.kidName);
+        });
+      } catch (e) {
+        print('Error deleting task: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to delete task: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 

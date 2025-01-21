@@ -62,20 +62,74 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
   }
 
   Future<void> deleteGoal(String title) async {
-    if (title.isEmpty || widget.kidName.isEmpty) {
-      print('Error: title or Kname is empty');
-      return;
-    }
+    // Show confirmation dialog
+    bool? confirmDelete = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: Text(
+            'Delete Goal',
+            style: TextStyle(
+              color: Color(0xFF2575CC),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to delete this goal?',
+            style: TextStyle(
+              color: Colors.black87,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(
+                'Delete',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
 
-    try {
-      print('Deleting goal with title: $title and Kname: ${widget.kidName}');
-      await GoalServices().deleteGoal(title, widget.kidName);
-      setState(() {
-        goals.removeWhere((goal) =>
-            goal['title'] == title && goal['Kname'] == widget.kidName);
-      });
-    } catch (e) {
-      print('Error deleting goal: $e');
+    if (confirmDelete == true) {
+      if (title.isEmpty || widget.kidName.isEmpty) {
+        print('Error: title or Kname is empty');
+        return;
+      }
+
+      try {
+        print('Deleting goal with title: $title and Kname: ${widget.kidName}');
+        await GoalServices().deleteGoal(title, widget.kidName);
+        setState(() {
+          goals.removeWhere((goal) =>
+              goal['title'] == title && goal['Kname'] == widget.kidName);
+        });
+      } catch (e) {
+        print('Error deleting goal: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to delete goal: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
