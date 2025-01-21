@@ -124,7 +124,7 @@ class KidCard extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(20.0),
           ),
           padding: const EdgeInsets.all(15.0),
         ),
@@ -136,8 +136,8 @@ class KidCard extends StatelessWidget {
               builder: (context) => ViewKidCard(kid: {
                 'Kname': name,
                 'balance': balance,
-                // 'savings': savings,
-                // 'steps': steps,
+                'savings': savings,
+                'steps': steps,
               }),
             ),
           );
@@ -154,7 +154,7 @@ class KidCard extends StatelessWidget {
               ),
               child: CircleAvatar(
                 backgroundImage: AssetImage(image),
-                radius: 30.0,
+                radius: 35.0,
               ),
             ),
             const SizedBox(width: 15.0),
@@ -169,7 +169,7 @@ class KidCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 5.0),
+                const SizedBox(height: 20.0),
                 Text(
                   'Balance: $balance KWD',
                   style: TextStyle(
@@ -177,20 +177,20 @@ class KidCard extends StatelessWidget {
                     fontSize: 14.0,
                   ),
                 ),
-                Text(
-                  'Savings: $savings KWD',
-                  style: TextStyle(
-                    color: textColor,
-                    fontSize: 14.0,
-                  ),
-                ),
-                Text(
-                  'Steps: $steps',
-                  style: TextStyle(
-                    color: textColor,
-                    fontSize: 14.0,
-                  ),
-                ),
+                // Text(
+                //   'Savings: $savings KWD',
+                //   style: TextStyle(
+                //     color: textColor,
+                //     fontSize: 14.0,
+                //   ),
+                // ),
+                // Text(
+                //   'Steps: $steps',
+                //   style: TextStyle(
+                //     color: textColor,
+                //     fontSize: 14.0,
+                //   ),
+                // ),
               ],
             ),
           ],
