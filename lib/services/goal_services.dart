@@ -1,6 +1,8 @@
 import 'package:bkid_frontend/services/client.dart';
 import 'package:dio/dio.dart';
 
+
+//Create goal
 class GoalServices {
   Future<void> createGoal(Map<String, dynamic> goalData) async {
     try {
@@ -25,6 +27,8 @@ class GoalServices {
     }
   }
 
+
+//Get goals 
   Future<List<Map<String, dynamic>>> getGoals(String kidName) async {
     try {
       Response response = await Client.dio.get(
@@ -48,6 +52,8 @@ class GoalServices {
     }
   }
 
+
+//get goals by kid name
   Future<List<Map<String, dynamic>>> getGoalsByKidName(String kidName) async {
     try {
       Response response = await Client.dio.get(
@@ -71,6 +77,7 @@ class GoalServices {
     }
   }
 
+//Delete goal
   Future<void> deleteGoal(String goalId) async {
     try {
       Response response = await Client.dio.delete(

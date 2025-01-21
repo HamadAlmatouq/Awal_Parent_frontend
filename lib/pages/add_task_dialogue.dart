@@ -1,54 +1,46 @@
+import 'package:bkid_frontend/services/task_services.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 
-class AddGoalsDialog extends StatefulWidget {
-  const AddGoalsDialog({Key? key}) : super(key: key);
+class AddTaskDialog extends StatefulWidget {
+  final String kidName;
+
+  const AddTaskDialog({Key? key, required this.kidName}) : super(key: key);
 
   @override
-  _AddGoalsDialogState createState() => _AddGoalsDialogState();
+  _AddTaskDialogState createState() => _AddTaskDialogState();
 }
 
-class _AddGoalsDialogState extends State<AddGoalsDialog> {
-  final TextEditingController goalNameController = TextEditingController();
-  final TextEditingController priceController = TextEditingController();
-  final TextEditingController endDateController = TextEditingController();
+class _AddTaskDialogState extends State<AddTaskDialog> {
+  final TextEditingController taskNameController = TextEditingController();
+  final TextEditingController feesController = TextEditingController();
+  final TextEditingController durationController = TextEditingController();
   String? errorMessage;
-  File? _image;
 
-  Future<void> _pickImage() async {
-    try {
-      final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  void handleSubmit() async {
+    final taskName = taskNameController.text.trim();
+    final feesText = feesController.text.trim();
+    final durationText = durationController.text.trim();
 
-      if (pickedFile != null) {
-        setState(() {
-          _image = File(pickedFile.path);
-        });
-      }
-    } catch (e) {
-      setState(() {
-        errorMessage = 'Error picking image.';
-      });
-    }
-  }
-
-  void handleSubmit() {
-    final goalName = goalNameController.text.trim();
-    final priceText = priceController.text.trim();
-    final endDate = endDateController.text.trim();
-
-    if (goalName.isEmpty || priceText.isEmpty || endDate.isEmpty) {
+    if (taskName.isEmpty || feesText.isEmpty || durationText.isEmpty) {
       setState(() {
         errorMessage = 'Please fill in all fields.';
       });
     } else {
-      Navigator.pop(context, {
-        'title': goalName,
-        'amount': int.tryParse(priceText) ?? 0,
-        'endDate': endDate,
-        'image': _image,
-      });
+      final taskData = {
+        'title': taskName,
+        'amount': int.tryParse(feesText) ?? 0,
+        'duration': durationText,
+        'Kname': widget.kidName,
+      };
+
+      try {
+        await TaskServices().createTask(taskData);
+        Navigator.pop(context, taskData);
+      } catch (e) {
+        setState(() {
+          errorMessage = e.toString();
+        });
+      }
     }
   }
 
@@ -77,7 +69,7 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
                   ),
                   const SizedBox(width: 80),
                   const Text(
-                    'Add Goals',
+                    'Add Task',
                     style: TextStyle(
                       fontSize: 24,
                       fontFamily: 'Inter',
@@ -88,33 +80,8 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
               ),
               const Divider(color: Color(0xFFECECEC)),
               const SizedBox(height: 16),
-              Center(
-                child: GestureDetector(
-                  onTap: _pickImage,
-                  child: _image == null
-                      ? Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Icon(
-                            Icons.add_a_photo,
-                            color: Colors.grey[800],
-                          ),
-                        )
-                      : Image.file(
-                          _image!,
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
-                        ),
-                ),
-              ),
-              const SizedBox(height: 16),
               const Text(
-                'Goal Name',
+                'Task Name',
                 style: TextStyle(
                   fontSize: 18,
                   fontFamily: 'Inter',
@@ -123,9 +90,9 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
               ),
               const SizedBox(height: 8),
               TextField(
-                controller: goalNameController,
+                controller: taskNameController,
                 decoration: InputDecoration(
-                  hintText: 'Enter goal name...',
+                  hintText: 'Enter task name...',
                   hintStyle: const TextStyle(
                     color: Color(0xFFC3C3C3),
                     fontSize: 14,
@@ -141,7 +108,7 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
               ),
               const SizedBox(height: 16),
               const Text(
-                'Price',
+                'Fees',
                 style: TextStyle(
                   fontSize: 18,
                   fontFamily: 'Inter',
@@ -150,7 +117,7 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
               ),
               const SizedBox(height: 8),
               TextField(
-                controller: priceController,
+                controller: feesController,
                 decoration: InputDecoration(
                   hintText: 'Amount...',
                   suffixText: 'KWD',
@@ -175,7 +142,7 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
               ),
               const SizedBox(height: 16),
               const Text(
-                'End Date',
+                'Duration',
                 style: TextStyle(
                   fontSize: 18,
                   fontFamily: 'Inter',
@@ -184,9 +151,9 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
               ),
               const SizedBox(height: 8),
               TextField(
-                controller: endDateController,
+                controller: durationController,
                 decoration: InputDecoration(
-                  hintText: 'YYYY-MM-DD',
+                  hintText: 'Enter duration...',
                   hintStyle: const TextStyle(
                     color: Color(0xFFC3C3C3),
                     fontSize: 14,
@@ -199,7 +166,6 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
                 ),
-                keyboardType: TextInputType.datetime,
               ),
               if (errorMessage != null) ...[
                 const SizedBox(height: 8),
