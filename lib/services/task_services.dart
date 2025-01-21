@@ -47,4 +47,28 @@ class TaskServices {
       }
     }
   }
+
+  Future<void> deleteTask(String title, String kname) async {
+    try {
+      print('Sending delete request with title: $title and Kname: $kname');
+      Response response = await Client.dio.delete(
+        "/parent/deleteTask",
+        data: {"title": title, "Kname": kname},
+      );
+      print("Task deletion response: ${response.data}");
+    } catch (error) {
+      if (error is DioError) {
+        if (error.response != null) {
+          print("Task deletion error response: ${error.response?.data}");
+          throw Exception(error.response?.data['message'] ?? 'Unknown error');
+        } else {
+          print("Task deletion error: ${error.message}");
+          throw Exception(error.message);
+        }
+      } else {
+        print("Task deletion error: $error");
+        throw Exception(error.toString());
+      }
+    }
+  }
 }

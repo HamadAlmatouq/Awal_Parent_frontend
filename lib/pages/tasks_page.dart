@@ -64,14 +64,24 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     }
   }
 
-  void deleteTask(int index) {
-    setState(() {
-      if (isInProgress) {
-        inProgressTasks.removeAt(index);
-      } else {
-        doneTasks.removeAt(index);
-      }
-    });
+  Future<void> deleteTask(String title) async {
+    if (title.isEmpty || widget.kidName.isEmpty) {
+      print('Error: title or Kname is empty');
+      return;
+    }
+
+    try {
+      print('Deleting task with title: $title and Kname: ${widget.kidName}');
+      await TaskServices().deleteTask(title, widget.kidName);
+      setState(() {
+        inProgressTasks.removeWhere((task) =>
+            task['title'] == title && task['Kname'] == widget.kidName);
+        doneTasks.removeWhere((task) =>
+            task['title'] == title && task['Kname'] == widget.kidName);
+      });
+    } catch (e) {
+      print('Error deleting task: $e');
+    }
   }
 
   void completeTask(int index) {
@@ -231,7 +241,16 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                               taskName: task['title'] ?? '',
                               fees: task['amount'] ?? 0,
                               duration: task['duration'].toString(),
-                              onDelete: () => deleteTask(index),
+                              onDelete: () async {
+                                await deleteTask(task['title'] ?? '');
+                                setState(() {
+                                  if (isInProgress) {
+                                    inProgressTasks.removeAt(index);
+                                  } else {
+                                    doneTasks.removeAt(index);
+                                  }
+                                });
+                              },
                               onComplete: isInProgress
                                   ? () => completeTask(index)
                                   : null,

@@ -67,6 +67,7 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
     }
 
     try {
+      print('Deleting goal with title: $title and Kname: ${widget.kidName}');
       await GoalServices().deleteGoal(title, widget.kidName);
       setState(() {
         goals.removeWhere((goal) =>
