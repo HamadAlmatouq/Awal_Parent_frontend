@@ -275,8 +275,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                   child: KidCard(
                                     name: kid['Kname'],
                                     balance: (kid['balance'] as num).toDouble(),
-                                    savings: (kid['savings'] as num).toDouble(),
-                                    steps: kid['steps'] as int,
+                                    // savings: (kid['savings'] as num).toDouble(),
+                                    // steps: kid['steps'] as int,
                                     image: 'assets/kid_image.png',
                                     backgroundColor: whiteCard,
                                     textColor: blueText,
