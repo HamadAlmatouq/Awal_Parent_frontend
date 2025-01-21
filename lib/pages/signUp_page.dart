@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class SignupPage extends StatelessWidget {
-  SignupPage({Key? key}) : super(key: key);
+  SignupPage({super.key});
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
@@ -18,10 +18,10 @@ class SignupPage extends StatelessWidget {
         elevation: 0,
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              const Color.fromARGB(207, 42, 148, 235),
+              Color.fromARGB(207, 42, 148, 235),
               Colors.grey,
             ],
             begin: Alignment.topLeft,

@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class AllowanceDialog extends StatelessWidget {
+  const AllowanceDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Allowance'),
+      title: const Text('Allowance'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -19,7 +21,7 @@ class AllowanceDialog extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           TextField(
             decoration: InputDecoration(
               labelText: 'Frequency',
@@ -37,14 +39,14 @@ class AllowanceDialog extends StatelessWidget {
             //for now
             context.pop();
           },
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         ElevatedButton(
           onPressed: () {
             //for now
             context.pop();
           },
-          child: Text('Save'),
+          child: const Text('Save'),
         ),
       ],
     );

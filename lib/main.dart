@@ -20,7 +20,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => KidProvider()),
       ],
-      child: MainApp(),
+      child: const MainApp(),
     ),
   );
 }
@@ -31,7 +31,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GoRouter router = GoRouter(
-      initialLocation: '/signin',
+      initialLocation: '/home',
       routes: [
         GoRoute(
           path: '/signup',
@@ -47,12 +47,12 @@ class MainApp extends StatelessWidget {
         ),
         GoRoute(
           path: '/add-kid',
-          builder: (context, state) => AddKidPage(),
+          builder: (context, state) => const AddKidPage(),
         ),
         GoRoute(
           path: '/view-kid',
           builder: (context, state) => ViewKidCard(
-            kid: {},
+            kid: const {},
           ),
         ),
         GoRoute(

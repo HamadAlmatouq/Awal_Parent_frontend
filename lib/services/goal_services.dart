@@ -10,7 +10,7 @@ class GoalServices {
       );
       print("Goal creation response: ${response.data}");
     } catch (error) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response != null) {
           print("Goal creation error response: ${error.response?.data}");
           throw Exception(error.response?.data['message'] ?? 'Unknown error');
@@ -33,7 +33,7 @@ class GoalServices {
       );
       return List<Map<String, dynamic>>.from(response.data);
     } catch (error) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response != null) {
           print("Get goals error response: ${error.response?.data}");
           throw Exception(error.response?.data['message'] ?? 'Unknown error');
@@ -56,7 +56,7 @@ class GoalServices {
       );
       return List<Map<String, dynamic>>.from(response.data);
     } catch (error) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response != null) {
           print("Get goals error response: ${error.response?.data}");
           throw Exception(error.response?.data['message'] ?? 'Unknown error');
@@ -79,7 +79,7 @@ class GoalServices {
       );
       print("Goal deletion response: ${response.data}");
     } catch (error) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response != null) {
           print("Goal deletion error response: ${error.response?.data}");
           throw Exception(error.response?.data['message'] ?? 'Unknown error');

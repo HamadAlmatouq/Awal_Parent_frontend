@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 class ViewKidCard extends StatelessWidget {
   final Map<String, dynamic> kid;
 
-  ViewKidCard({required this.kid});
+  const ViewKidCard({super.key, required this.kid});
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +18,14 @@ class ViewKidCard extends StatelessWidget {
         backgroundColor: Colors.blue,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications, color: Colors.white),
+            icon: const Icon(Icons.notifications, color: Colors.white),
             onPressed: () {},
           ),
         ],
@@ -36,7 +36,7 @@ class ViewKidCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
@@ -46,23 +46,23 @@ class ViewKidCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        CircleAvatar(
+                        const CircleAvatar(
                           radius: 30,
                           backgroundImage: AssetImage('assets/kid_image.png'),
                         ),
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               kid['Kname'] ?? 'Unknown',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.blue,
                               ),
                             ),
-                            Text(
+                            const Text(
                               '1234 5678 XXXX XXXX',
                               style: TextStyle(
                                 fontSize: 16,
@@ -71,11 +71,11 @@ class ViewKidCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Spacer(),
-                        Icon(Icons.qr_code, color: Colors.blue),
+                        const Spacer(),
+                        const Icon(Icons.qr_code, color: Colors.blue),
                       ],
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -100,7 +100,7 @@ class ViewKidCard extends StatelessWidget {
                     onTap: () {
                       context.push('/tasks');
                     },
-                    child: Column(
+                    child: const Column(
                       children: [
                         CircleAvatar(
                           radius: 30,
@@ -128,7 +128,7 @@ class ViewKidCard extends StatelessWidget {
                         },
                       );
                     },
-                    child: Column(
+                    child: const Column(
                       children: [
                         CircleAvatar(
                           radius: 30,
@@ -151,7 +151,7 @@ class ViewKidCard extends StatelessWidget {
                     onTap: () {
                       context.push('/restriction');
                     },
-                    child: Column(
+                    child: const Column(
                       children: [
                         CircleAvatar(
                           radius: 30,
@@ -174,7 +174,7 @@ class ViewKidCard extends StatelessWidget {
                     onTap: () {
                       context.push('/goals', extra: kid['Kname']);
                     },
-                    child: Column(
+                    child: const Column(
                       children: [
                         CircleAvatar(
                           radius: 30,
@@ -195,9 +195,9 @@ class ViewKidCard extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            const SizedBox(height: 16),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -210,7 +210,7 @@ class ViewKidCard extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             ..._buildRewardCards(),
           ],
         ),
@@ -231,7 +231,7 @@ class ViewKidCard extends StatelessWidget {
         ),
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 14,
             color: Colors.grey,
           ),
@@ -251,7 +251,7 @@ class ViewKidCard extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: reward['color'],
             borderRadius: BorderRadius.circular(12),
@@ -261,16 +261,16 @@ class ViewKidCard extends StatelessWidget {
             children: [
               Text(
                 reward['title'],
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 reward['points'],
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 14,
                 ),

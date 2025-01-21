@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class GoalsManagingScreen extends StatefulWidget {
   final String kidName;
 
-  GoalsManagingScreen({required this.kidName});
+  const GoalsManagingScreen({super.key, required this.kidName});
 
   @override
   _GoalsManagingScreenState createState() => _GoalsManagingScreenState();
@@ -37,7 +37,7 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
     final newGoal = await showDialog<Map<String, dynamic>>(
       context: context,
       builder: (BuildContext context) {
-        return AddGoalsDialog();
+        return const AddGoalsDialog();
       },
     );
 
@@ -77,19 +77,19 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF2575CC),
+      backgroundColor: const Color(0xFF2575CC),
       appBar: AppBar(
-        backgroundColor: Color(0xFF2575CC),
+        backgroundColor: const Color(0xFF2575CC),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text(
+        title: const Text(
           'Goals Managing',
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
             fontSize: 24,
             fontFamily: 'Inter',
@@ -105,7 +105,7 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
             Expanded(
               child: Container(
                 width: double.infinity,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(25),
@@ -146,7 +146,7 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
                                         color: isInProgress
                                             ? const Color(0xFF2575CC)
                                             : Colors.white,
-                                        borderRadius: BorderRadius.horizontal(
+                                        borderRadius: const BorderRadius.horizontal(
                                           left: Radius.circular(10),
                                         ),
                                       ),
@@ -183,7 +183,7 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
                                         color: !isInProgress
                                             ? const Color(0xFF2575CC)
                                             : Colors.white,
-                                        borderRadius: BorderRadius.horizontal(
+                                        borderRadius: const BorderRadius.horizontal(
                                           right: Radius.circular(10),
                                         ),
                                       ),
@@ -220,9 +220,9 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       width: 100,
-                                      child: Text(
+                                      child: const Text(
                                         'Goal Name',
                                         style: TextStyle(
                                           color: Color(0xFF2575CC),
@@ -231,9 +231,9 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
                                         ),
                                       ),
                                     ),
-                                    Container(
+                                    SizedBox(
                                       width: 100,
-                                      child: Text(
+                                      child: const Text(
                                         'Amount',
                                         style: TextStyle(
                                           color: Color(0xFF2575CC),
@@ -242,9 +242,9 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
                                         ),
                                       ),
                                     ),
-                                    Container(
+                                    SizedBox(
                                       width: 100,
-                                      child: Text(
+                                      child: const Text(
                                         'End Date',
                                         style: TextStyle(
                                           color: Color(0xFF2575CC),
@@ -282,7 +282,7 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
                               ),
                             ),
                             AddGoalButton(onPressed: addGoal),
-                            SizedBox(height: 16),
+                            const SizedBox(height: 16),
                           ],
                         ),
                       ),
@@ -307,45 +307,45 @@ class GoalItem extends StatelessWidget {
   final VoidCallback onDelete;
 
   const GoalItem({
-    Key? key,
+    super.key,
     required this.goalId,
     required this.goalName,
     required this.amount,
     required this.endDate,
     required this.onAmountChanged,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8.0),
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
           Container(
             width: 100,
             height: 48,
-            padding: EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              border: Border.all(color: Color(0xFF2575CC)),
+              border: Border.all(color: const Color(0xFF2575CC)),
               borderRadius: BorderRadius.circular(8),
             ),
             alignment: Alignment.centerLeft,
             child: Text(
               goalName,
               style: TextStyle(
-                color: Color(0xFF2575CC).withOpacity(0.5),
+                color: const Color(0xFF2575CC).withOpacity(0.5),
                 fontSize: 14,
               ),
             ),
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Container(
             width: 100,
             height: 48,
-            padding: EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              border: Border.all(color: Color(0xFF2575CC)),
+              border: Border.all(color: const Color(0xFF2575CC)),
               borderRadius: BorderRadius.circular(8),
             ),
             child: TextField(
@@ -364,27 +364,27 @@ class GoalItem extends StatelessWidget {
               },
             ),
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Container(
             width: 100,
             height: 48,
-            padding: EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              border: Border.all(color: Color(0xFF2575CC)),
+              border: Border.all(color: const Color(0xFF2575CC)),
               borderRadius: BorderRadius.circular(8),
             ),
             alignment: Alignment.centerLeft,
             child: Text(
               endDate,
               style: TextStyle(
-                color: Color(0xFF2575CC).withOpacity(0.5),
+                color: const Color(0xFF2575CC).withOpacity(0.5),
                 fontSize: 14,
               ),
             ),
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           IconButton(
-            icon: Icon(Icons.delete, color: Colors.red),
+            icon: const Icon(Icons.delete, color: Colors.red),
             onPressed: onDelete,
           ),
         ],
@@ -397,9 +397,9 @@ class AddGoalButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const AddGoalButton({
-    Key? key,
+    super.key,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -418,12 +418,12 @@ class AddGoalButton extends StatelessWidget {
                 width: 1,
                 style: BorderStyle.solid),
           ),
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.add, color: Color(0xFF2575CC)),
-              const SizedBox(width: 8),
-              const Text(
+              SizedBox(width: 8),
+              Text(
                 'Add Goal',
                 style: TextStyle(
                   color: Color(0xFF2575CC),

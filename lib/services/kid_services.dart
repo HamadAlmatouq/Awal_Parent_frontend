@@ -23,7 +23,7 @@ class KidServices {
       );
       print("Kid creation response: ${response.data}");
     } catch (error) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response != null) {
           print("Kid creation error response: ${error.response?.data}");
           throw Exception(error.response?.data['message'] ?? 'Unknown error');
@@ -50,7 +50,7 @@ class KidServices {
       );
       return List<Map<String, dynamic>>.from(response.data);
     } catch (error) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response != null) {
           print("Get kids error response: ${error.response?.data}");
           throw Exception(error.response?.data['message'] ?? 'Unknown error');

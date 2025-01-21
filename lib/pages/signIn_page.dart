@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class SigninPage extends StatelessWidget {
-  SigninPage({Key? key}) : super(key: key);
+  SigninPage({super.key});
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -21,7 +21,7 @@ class SigninPage extends StatelessWidget {
               children: [
                 const SizedBox(height: 120),
                 // Logo
-                Text(
+                const Text(
                   'awal.',
                   style: TextStyle(
                     color: Colors.white,
@@ -32,7 +32,7 @@ class SigninPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 60),
-                Text(
+                const Text(
                   "Your child's future starts here",
                   style: TextStyle(
                     color: Colors.white,
@@ -42,7 +42,7 @@ class SigninPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 5),
-                Text(
+                const Text(
                   'log in with burgan account',
                   style: TextStyle(
                     color: Colors.white,
@@ -57,7 +57,7 @@ class SigninPage extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Username',
                       style: TextStyle(
                         color: Colors.white,
@@ -75,7 +75,7 @@ class SigninPage extends StatelessWidget {
                       ),
                       child: TextField(
                         controller: usernameController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Username...',
                           hintStyle: TextStyle(
                             color: Color(0xFFA9A9A9),
@@ -96,7 +96,7 @@ class SigninPage extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Password',
                       style: TextStyle(
                         color: Colors.white,
@@ -115,7 +115,7 @@ class SigninPage extends StatelessWidget {
                       child: TextField(
                         controller: passwordController,
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Password...',
                           hintStyle: TextStyle(
                             color: Color(0xFFA9A9A9),
@@ -162,10 +162,10 @@ class SigninPage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    minimumSize: Size(double.infinity, 51),
+                    minimumSize: const Size(double.infinity, 51),
                   ),
                   
-                  child: Text(
+                  child: const Text(
                     'Login',
                     style: TextStyle(
                       color: Color(0xFF2575CC),
@@ -183,7 +183,7 @@ class SigninPage extends StatelessWidget {
                   onPressed: () {
                     
                   },
-                  child: Text(
+                  child: const Text(
                     'Forget password?',
                     style: TextStyle(
                       color: Colors.white,

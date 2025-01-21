@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AddGoalsDialog extends StatefulWidget {
-  const AddGoalsDialog({Key? key}) : super(key: key);
+  const AddGoalsDialog({super.key});
 
   @override
   _AddGoalsDialogState createState() => _AddGoalsDialogState();

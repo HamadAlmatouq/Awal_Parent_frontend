@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
 class RestrictionsPage extends StatefulWidget {
+  const RestrictionsPage({super.key});
+
   @override
   _RestrictionsPageState createState() => _RestrictionsPageState();
 }
@@ -27,23 +29,23 @@ class _RestrictionsPageState extends State<RestrictionsPage> {
         backgroundColor: Colors.blue,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text('Restrictions', style: TextStyle(color: Colors.white)),
+        title: const Text('Restrictions', style: TextStyle(color: Colors.white)),
       ),
       body: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
         ),
         child: ListView(
           children: [
             ListTile(
-              title: Text(
+              title: const Text(
                 'Enable Restrictions',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -54,16 +56,16 @@ class _RestrictionsPageState extends State<RestrictionsPage> {
                     enableRestrictions = value;
                   });
                 },
-                activeColor: Colors.green,
+                activeTrackColor: Colors.green,
               ),
             ),
-            Divider(),
+            const Divider(),
             _buildInputField('Daily spending limits', 'amount... KD', enableRestrictions),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             _buildCardBlockRow(enableRestrictions),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             _buildInputField('Saving limits account', 'amount... KD', enableRestrictions),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
                        _buildToggle('Allow online payment', allowOnlinePayment, enableRestrictions, (value) {
               setState(() {
                 allowOnlinePayment = value;
@@ -75,9 +77,9 @@ class _RestrictionsPageState extends State<RestrictionsPage> {
                 fractionToSaving = value;
               });
             }),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             _buildCategoryRestrictions(enableRestrictions),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: enableRestrictions ? () {
                 context.pop();
@@ -85,12 +87,12 @@ class _RestrictionsPageState extends State<RestrictionsPage> {
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
           ],
         ),
@@ -127,7 +129,7 @@ class _RestrictionsPageState extends State<RestrictionsPage> {
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
         backgroundColor: enabled ? color : Colors.grey,
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -145,7 +147,7 @@ class _RestrictionsPageState extends State<RestrictionsPage> {
       trailing: CupertinoSwitch(
         value: value,
         onChanged: enabled ? onChanged : null,
-        activeColor: Colors.green,
+        activeTrackColor: Colors.green,
       ),
     );
   }
@@ -158,10 +160,10 @@ class _RestrictionsPageState extends State<RestrictionsPage> {
           'Category Restrictions',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: enabled ? Colors.black : Colors.grey),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         DropdownButtonFormField<String>(
           value: null,
-          hint: Text('Select category'),
+          hint: const Text('Select category'),
           items: categories.map((String category) {
             return DropdownMenuItem<String>(
               value: category,
@@ -178,13 +180,13 @@ class _RestrictionsPageState extends State<RestrictionsPage> {
                 }
               : null,
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Wrap(
           spacing: 8.0,
           children: restrictedCategories.map((String category) {
             return Chip(
               label: Text(category),
-              deleteIcon: Icon(Icons.close),
+              deleteIcon: const Icon(Icons.close),
               onDeleted: () {
                 setState(() {
                   restrictedCategories.remove(category);

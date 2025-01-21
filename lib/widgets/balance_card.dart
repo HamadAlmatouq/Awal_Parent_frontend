@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class BalanceCard extends StatelessWidget {
   final double balance;
 
-  BalanceCard({required this.balance});
+  const BalanceCard({super.key, required this.balance});
 
   @override
   Widget build(BuildContext context) {
-    final dummyCardNumber = '1234 5678 9101 6789';
+    const dummyCardNumber = '1234 5678 9101 6789';
 
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -18,7 +18,7 @@ class BalanceCard extends StatelessWidget {
           BoxShadow(
             color: Colors.grey.shade300,
             blurRadius: 6,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -29,29 +29,29 @@ class BalanceCard extends StatelessWidget {
             children: [
               Text(
                 dummyCardNumber,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Icon(
+              const Icon(
                 Icons.notifications,
-                color: Color(0xFF2575CC),
+                color: Color(0xFFFFFFFF),
               ),
             ],
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             'Balance',
             style: TextStyle(
               fontSize: 14,
               color: Colors.grey,
             ),
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(
             '$balance KWD',
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 24,
             ),

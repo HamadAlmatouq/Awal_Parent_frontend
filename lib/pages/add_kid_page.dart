@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AddKidPage extends StatefulWidget {
-  const AddKidPage({Key? key}) : super(key: key);
+  const AddKidPage({super.key});
 
   @override
   _AddKidPageState createState() => _AddKidPageState();
@@ -178,20 +178,20 @@ class _AddKidPageState extends State<AddKidPage> {
                                 );
                                 if (result) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
+                                    const SnackBar(
                                         content:
                                             Text('Kid created successfully')),
                                   );
                                   Navigator.pop(context);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
+                                    const SnackBar(
                                         content: Text('Kid creation failed')),
                                   );
                                 }
                               } else if (!termsAccepted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                       content: Text(
                                           'Please accept the terms and conditions')),
                                 );

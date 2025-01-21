@@ -26,7 +26,7 @@ class AuthServices {
       token = response.data["token"];
       print("Token received: $token");
     } catch (error) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response != null) {
           print("Signup error response: ${error.response?.data}");
           throw Exception(error.response?.data['message'] ?? 'Unknown error');
@@ -65,7 +65,7 @@ class AuthServices {
       token = response.data["token"];
       print("Token received: $token");
     } catch (error) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response != null) {
           print("Signin error response: ${error.response?.data}");
           throw Exception(error.response?.data['message'] ?? 'Unknown error');
