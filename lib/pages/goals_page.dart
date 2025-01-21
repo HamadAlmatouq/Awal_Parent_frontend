@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:bkid_frontend/pages/add_goal_dialogue.dart';
 import 'package:bkid_frontend/services/goal_services.dart';
 import 'package:flutter/material.dart';
@@ -118,7 +119,20 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
                 ),
                 child: Column(
                   children: [
+                    /*
+                    /
+                    /
+                    /
+                    /
+                    /
+                    /
                     // Tab Switcher
+                    /
+                    /
+                    /
+                    /
+                    /
+                    */
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 16.0),
@@ -266,13 +280,15 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
                                 itemCount: goals.length,
                                 itemBuilder: (context, index) {
                                   final goal = goals[index];
-                                  return SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0),
                                     child: GoalItem(
                                       goalId: goal['id'] as String?,
-                                      goalName: goal['title'],
-                                      amount: goal['amount'],
-                                      endDate: goal['endDate'],
+                                      goalName: goal['title'] ?? '',
+                                      amount: goal['amount'] ?? 0,
+                                      endDate: goal['endDate'] ?? '',
+                                      image: goal['image'] as String?,
                                       onAmountChanged: (newAmount) {
                                         setState(() {
                                           goal['amount'] = newAmount;
@@ -307,6 +323,7 @@ class GoalItem extends StatelessWidget {
   final String goalName;
   final int amount;
   final String endDate;
+  final String? image;
   final ValueChanged<int> onAmountChanged;
   final VoidCallback onDelete;
 
@@ -316,82 +333,142 @@ class GoalItem extends StatelessWidget {
     required this.goalName,
     required this.amount,
     required this.endDate,
+    this.image,
     required this.onAmountChanged,
     required this.onDelete,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          Container(
-            width: 100,
-            height: 48,
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            decoration: BoxDecoration(
-              border: Border.all(color: Color(0xFF2575CC)),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              goalName,
-              style: TextStyle(
-                color: Color(0xFF2575CC).withOpacity(0.5),
-                fontSize: 14,
-              ),
-            ),
-          ),
-          SizedBox(width: 8),
-          Container(
-            width: 100,
-            height: 48,
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            decoration: BoxDecoration(
-              border: Border.all(color: Color(0xFF2575CC)),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: TextField(
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: '$amount KD',
-                hintStyle: TextStyle(
-                  color: Colors.grey.withOpacity(0.5),
-                  fontSize: 14,
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+      elevation: 2,
+      color: Color(0xFF7CACE0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Row(
+          children: [
+            // Square image on the left
+            if (image != null && image!.isNotEmpty)
+              Container(
+                width: 60,
+                height: 60,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.memory(
+                    base64Decode(image!),
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      print('Error loading image: $error');
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child:
+                            Icon(Icons.image_not_supported, color: Colors.grey),
+                      );
+                    },
+                  ),
                 ),
+              )
+            else
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(Icons.image_not_supported, color: Colors.grey),
               ),
-              onChanged: (value) {
-                int newAmount = int.tryParse(value) ?? amount;
-                onAmountChanged(newAmount);
-              },
-            ),
-          ),
-          SizedBox(width: 8),
-          Container(
-            width: 100,
-            height: 48,
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            decoration: BoxDecoration(
-              border: Border.all(color: Color(0xFF2575CC)),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              endDate,
-              style: TextStyle(
-                color: Color(0xFF2575CC).withOpacity(0.5),
-                fontSize: 14,
+            SizedBox(width: 12),
+            // Goal details
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Title column
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Goal Name',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFFFFFFFF),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          goalName,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFFFFFFFF),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Amount column
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Amount',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFFFFFFFF),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '$amount ',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFFFFFFFF),
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'KWD',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFFFFFFFF),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          SizedBox(width: 8),
-          IconButton(
-            icon: Icon(Icons.delete, color: Colors.red),
-            onPressed: onDelete,
-          ),
-        ],
+            SizedBox(width: 8),
+            // Delete button
+            IconButton(
+              icon: Icon(Icons.delete, color: Colors.white, size: 20),
+              onPressed: onDelete,
+              padding: EdgeInsets.zero,
+              constraints: BoxConstraints(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -418,9 +495,10 @@ class AddGoalButton extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-                color: const Color(0xFF2575CC),
-                width: 1,
-                style: BorderStyle.solid),
+              color: const Color(0xFF2575CC),
+              width: 1,
+              style: BorderStyle.solid,
+            ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
