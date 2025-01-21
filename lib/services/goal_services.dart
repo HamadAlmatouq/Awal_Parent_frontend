@@ -78,11 +78,11 @@ class GoalServices {
   }
 
 //Delete goal
-  Future<void> deleteGoal(String goalId) async {
+  Future<void> deleteGoal(String title, String kname) async {
     try {
       Response response = await Client.dio.delete(
         "/parent/deleteGoal",
-        queryParameters: {"goalId": goalId},
+        data: {"title": title, "kname": kname},
       );
       print("Goal deletion response: ${response.data}");
     } catch (error) {

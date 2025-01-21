@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -25,10 +26,18 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
         setState(() {
           _image = File(pickedFile.path);
         });
+      } else {
+        setState(() {
+          errorMessage = 'No image selected.';
+        });
       }
+    } on PlatformException catch (e) {
+      setState(() {
+        errorMessage = 'Error picking image: ${e.message}';
+      });
     } catch (e) {
       setState(() {
-        errorMessage = 'Error picking image.';
+        errorMessage = 'Error picking image: $e';
       });
     }
   }

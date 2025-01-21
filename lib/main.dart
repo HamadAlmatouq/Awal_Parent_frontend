@@ -52,7 +52,7 @@ class MainApp extends StatelessWidget {
         GoRoute(
           path: '/view-kid',
           builder: (context, state) => ViewKidCard(
-            kid: {},
+            kid: state.extra as Map<String, dynamic>,
           ),
         ),
         GoRoute(
@@ -61,8 +61,10 @@ class MainApp extends StatelessWidget {
         ),
         GoRoute(
           path: '/Goals',
-          builder: (context, state) =>
-              GoalsManagingScreen(kidName: state.extra as String),
+          builder: (context, state) {
+            final kid = state.extra as Map<String, dynamic>;
+            return GoalsManagingScreen(kidName: kid['Kname']);
+          },
         ),
         GoRoute(
           path: '/Allowance',

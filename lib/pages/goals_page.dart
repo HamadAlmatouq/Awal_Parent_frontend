@@ -1,6 +1,8 @@
 import 'package:bkid_frontend/pages/add_goal_dialogue.dart';
 import 'package:bkid_frontend/services/goal_services.dart';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import '../services/client.dart';
 
 class GoalsManagingScreen extends StatefulWidget {
   final String kidName;
@@ -58,19 +60,20 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
     }
   }
 
-  void deleteGoal(String? goalId) async {
-    if (goalId == null) {
-      print("Error: goalId is null");
+  Future<void> deleteGoal(String title) async {
+    if (title.isEmpty || widget.kidName.isEmpty) {
+      print('Error: title or Kname is empty');
       return;
     }
+
     try {
-      await GoalServices().deleteGoal(goalId);
-      fetchGoals(); // Refresh the goals list
+      await GoalServices().deleteGoal(title, widget.kidName);
+      setState(() {
+        goals.removeWhere((goal) =>
+            goal['title'] == title && goal['Kname'] == widget.kidName);
+      });
     } catch (e) {
-      print("Error deleting goal: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error deleting goal: $e')),
-      );
+      print('Error deleting goal: $e');
     }
   }
 
@@ -275,7 +278,7 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
                                         });
                                       },
                                       onDelete: () =>
-                                          deleteGoal(goal['id'] as String?),
+                                          deleteGoal(goal['title'] ?? ''),
                                     ),
                                   );
                                 },

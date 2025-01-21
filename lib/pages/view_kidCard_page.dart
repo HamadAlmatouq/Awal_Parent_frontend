@@ -172,7 +172,7 @@ class ViewKidCard extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      context.push('/goals', extra: kid['Kname']);
+                      context.push('/goals', extra: kid);
                     },
                     child: Column(
                       children: [
