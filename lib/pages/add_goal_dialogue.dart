@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'dart:convert';
 
 class AddGoalsDialog extends StatefulWidget {
   const AddGoalsDialog({Key? key}) : super(key: key);
@@ -20,7 +21,12 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
   Future<void> _pickImage() async {
     try {
       final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      final pickedFile = await picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 300, // Reduce max width
+        maxHeight: 300, // Reduce max height
+        imageQuality: 30, // Reduce quality significantly
+      );
 
       if (pickedFile != null) {
         setState(() {
@@ -31,10 +37,6 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
           errorMessage = 'No image selected.';
         });
       }
-    } on PlatformException catch (e) {
-      setState(() {
-        errorMessage = 'Error picking image: ${e.message}';
-      });
     } catch (e) {
       setState(() {
         errorMessage = 'Error picking image: $e';
@@ -42,7 +44,7 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
     }
   }
 
-  void handleSubmit() {
+  void handleSubmit() async {
     final goalName = goalNameController.text.trim();
     final priceText = priceController.text.trim();
     final endDate = endDateController.text.trim();
@@ -51,12 +53,32 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
       setState(() {
         errorMessage = 'Please fill in all fields.';
       });
-    } else {
+      return;
+    }
+
+    try {
+      String? base64Image;
+      if (_image != null) {
+        final bytes = await _image!.readAsBytes();
+        if (bytes.length > 500000) {
+          // Check if image is larger than ~500KB
+          setState(() {
+            errorMessage = 'Image is too large. Please choose a smaller image.';
+          });
+          return;
+        }
+        base64Image = base64Encode(bytes);
+      }
+
       Navigator.pop(context, {
         'title': goalName,
         'amount': int.tryParse(priceText) ?? 0,
         'endDate': endDate,
-        'image': _image,
+        'image': base64Image,
+      });
+    } catch (e) {
+      setState(() {
+        errorMessage = 'Error processing image: $e';
       });
     }
   }
@@ -235,7 +257,7 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
                     ),
                   ),
                   child: const Text(
-                    'Save',
+                    'Add Goal',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
