@@ -42,26 +42,25 @@ class KidServices {
     try {
       Response response = await Client.dio.get(
         "/parent/getKidsByParent",
-        options: Options(
-          headers: {
-            "Authorization": "Bearer $token",
-          },
-        ),
       );
-      return List<Map<String, dynamic>>.from(response.data);
-    } catch (error) {
-      if (error is DioError) {
-        if (error.response != null) {
-          print("Get kids error response: ${error.response?.data}");
-          throw Exception(error.response?.data['message'] ?? 'Unknown error');
-        } else {
-          print("Get kids error: ${error.message}");
-          throw Exception(error.message);
-        }
+
+      if (response.statusCode == 200) {
+        List<Map<String, dynamic>> kids = (response.data as List).map((kid) {
+          return {
+            'Kname': kid['Kname'],
+            'balance': kid['balance'] ?? 0.0,
+            'savings': kid['savings'] ?? 0.0,
+            'steps': kid['steps'] ?? 0,
+            'points': kid['points'] ?? 0, // Make sure points is included
+          };
+        }).toList();
+        return kids;
       } else {
-        print("Get kids error: $error");
-        throw Exception(error.toString());
+        throw Exception('Failed to load kids');
       }
+    } catch (e) {
+      print('Error in getKidsByParent: $e');
+      throw Exception('Failed to load kids: $e');
     }
   }
 }

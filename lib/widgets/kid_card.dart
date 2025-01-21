@@ -6,6 +6,7 @@ class KidCard extends StatelessWidget {
   final double balance;
   final double savings;
   final int steps;
+  final int points; // Add points parameter
   final String image;
 
   KidCard({
@@ -13,11 +14,13 @@ class KidCard extends StatelessWidget {
     required this.balance,
     required this.savings,
     required this.steps,
+    required this.points, // Add points to constructor
     required this.image,
   });
 
   @override
   Widget build(BuildContext context) {
+    print('Building KidCard with points: $points'); // Debug print
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: ElevatedButton(
@@ -29,7 +32,7 @@ class KidCard extends StatelessWidget {
           padding: EdgeInsets.all(15.0),
         ),
         onPressed: () {
-          // Handle kid card tap
+          print('Navigating with points: $points'); // Debug print
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -38,6 +41,7 @@ class KidCard extends StatelessWidget {
                 'balance': balance,
                 'savings': savings,
                 'steps': steps,
+                'points': points, // Add points to the kid data map
               }),
             ),
           );
@@ -76,6 +80,7 @@ class KidCard extends StatelessWidget {
                     fontSize: 16.0,
                   ),
                 ),
+                // Removed points display from here
               ],
             ),
           ],

@@ -1,3 +1,4 @@
+import 'package:bkid_frontend/services/client.dart';
 import 'package:bkid_frontend/services/kid_services.dart';
 import 'package:flutter/material.dart';
 
@@ -30,17 +31,36 @@ class KidProvider extends ChangeNotifier {
   }
 
   Future<void> fetchKidsByParent([String? token]) async {
+    // Make token optional
     try {
-      if (token != null) {
-        _kids = await KidServices().getKidsByParent(token);
-        // No need to fetch balance, savings, and steps separately
-      } else {
-        // Handle case where token is not provided
-        print("Token is required to fetch kids");
+      print('Fetching kids from API...');
+      // Update the endpoint to match your backend API
+      final response =
+          await Client.dio.get('/parent/getKidsByParent'); // Fixed endpoint
+      print('API Response: ${response.data}');
+
+      if (response.statusCode == 200) {
+        final List<dynamic> kidsData = response.data;
+        _kids = kidsData.map((kid) {
+          print('Processing kid data: $kid');
+          return {
+            'Kname': kid['Kname'] ?? '',
+            'balance': (kid['balance'] as num?)?.toDouble() ?? 0.0,
+            'savings': (kid['savings'] as num?)?.toDouble() ?? 0.0,
+            'steps': (kid['steps'] as num?)?.toInt() ?? 0,
+            'points': (kid['points'] as num?)?.toInt() ??
+                0, // Make sure to parse points as integer
+          };
+        }).toList();
+
+        print('Processed kids data: $_kids');
+        notifyListeners();
       }
-      notifyListeners();
     } catch (e) {
-      print("Fetch kids error: $e");
+      print('Error fetching kids: $e');
+      // Set empty list instead of throwing to prevent app crash
+      _kids = [];
+      notifyListeners();
     }
   }
 }

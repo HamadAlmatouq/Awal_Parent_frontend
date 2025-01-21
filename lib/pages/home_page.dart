@@ -259,32 +259,40 @@ class _DashboardPageState extends State<DashboardPage> {
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            ...kidProvider.kids.map((kid) => GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ViewKidCard(
-                                          kid: {
-                                            'Kname': kid['Kname'],
-                                            'balance': (kid['balance'] as num)
-                                                .toDouble(),
-                                            'savings': (kid['savings'] as num)
-                                                .toDouble(),
-                                            'steps': kid['steps'] as int,
-                                          },
-                                        ),
+                            ...kidProvider.kids.map((kid) {
+                              print(
+                                  'Mapping kid data for UI: ${kid}'); // Debug print
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ViewKidCard(
+                                        kid: {
+                                          'Kname': kid['Kname'],
+                                          'balance': (kid['balance'] as num)
+                                              .toDouble(),
+                                          'savings': (kid['savings'] as num)
+                                              .toDouble(),
+                                          'steps': kid['steps'] as int,
+                                          'points': kid['points']
+                                              as int, // Make sure points is passed correctly
+                                        },
                                       ),
-                                    );
-                                  },
-                                  child: KidCard(
-                                    name: kid['Kname'],
-                                    balance: (kid['balance'] as num).toDouble(),
-                                    savings: (kid['savings'] as num).toDouble(),
-                                    steps: kid['steps'] as int,
-                                    image: 'assets/images.png',
-                                  ),
-                                )),
+                                    ),
+                                  );
+                                },
+                                child: KidCard(
+                                  name: kid['Kname'],
+                                  balance: (kid['balance'] as num).toDouble(),
+                                  savings: (kid['savings'] as num).toDouble(),
+                                  steps: kid['steps'] as int,
+                                  points: kid['points']
+                                      as int, // Pass points directly
+                                  image: 'assets/images.png',
+                                ),
+                              );
+                            }),
                             SizedBox(height: 20.0),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(

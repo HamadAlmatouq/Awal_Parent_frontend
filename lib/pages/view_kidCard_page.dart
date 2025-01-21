@@ -86,6 +86,8 @@ class ViewKidCard extends StatelessWidget {
                             '${kid['savings'] ?? 0.0} KWD', Colors.blue),
                         _buildInfoColumn(
                             'Steps', '${kid['steps'] ?? 0}', Colors.blue),
+                        _buildInfoColumn(
+                            'Points', '${kid['points'] ?? 0}', Colors.blue),
                       ],
                     ),
                   ],
