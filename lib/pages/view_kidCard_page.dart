@@ -2403,8 +2403,8 @@ class ViewKidCard extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  top: -20,
-                  left: -20,
+                  top: -10,
+                  left: -10,
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
