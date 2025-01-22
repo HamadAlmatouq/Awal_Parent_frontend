@@ -70,7 +70,9 @@ class MainApp extends StatelessWidget {
         ),
         GoRoute(
           path: '/Tasks',
-          builder: (context, state) => TasksPage(),
+          builder: (context, state) => TasksPage(
+            kidName: '',
+          ),
         ),
       ],
     );
