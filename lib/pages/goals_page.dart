@@ -292,39 +292,39 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        'Goal Name',
-                                        style: TextStyle(
-                                          color: Color(0xFF2575CC),
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        'Amount',
-                                        style: TextStyle(
-                                          color: Color(0xFF2575CC),
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        'End Date',
-                                        style: TextStyle(
-                                          color: Color(0xFF2575CC),
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
+                                    // Container(
+                                    //   width: 100,
+                                    //   child: Text(
+                                    //     'Goal Name',
+                                    //     style: TextStyle(
+                                    //       color: Color(0xFF2575CC),
+                                    //       fontSize: 15,
+                                    //       fontWeight: FontWeight.bold,
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    // Container(
+                                    //   width: 100,
+                                    //   child: Text(
+                                    //     'Amount',
+                                    //     style: TextStyle(
+                                    //       color: Color(0xFF2575CC),
+                                    //       fontSize: 15,
+                                    //       fontWeight: FontWeight.bold,
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    // Container(
+                                    //   width: 100,
+                                    //   child: Text(
+                                    //     'End Date',
+                                    //     style: TextStyle(
+                                    //       color: Color(0xFF2575CC),
+                                    //       fontSize: 15,
+                                    //       fontWeight: FontWeight.bold,
+                                    //     ),
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                               ),
