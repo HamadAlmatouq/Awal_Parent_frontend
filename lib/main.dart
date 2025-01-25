@@ -89,7 +89,7 @@ class MainApp extends StatelessWidget {
         GoRoute(
           path: '/notifications',
           builder: (context, state) => NotificationScreen(
-            kidName: state.extra as String, // Pass the kidName to notifications
+            kidName: state.extra as String,
           ),
         ),
       ],
