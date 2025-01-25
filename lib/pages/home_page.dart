@@ -1,4 +1,5 @@
 import 'package:bkid_frontend/main.dart';
+import 'package:bkid_frontend/pages/notification_page.dart';
 import 'package:bkid_frontend/pages/transfer_dialogue.dart';
 import 'package:bkid_frontend/providers/auth_provider.dart';
 import 'package:bkid_frontend/providers/kid_provider.dart';
@@ -7,6 +8,9 @@ import 'package:bkid_frontend/widgets/kid_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:dio/dio.dart';
+import 'package:bkid_frontend/services/client.dart';
+import 'dart:convert';
 import 'view_kidCard_page.dart';
 
 void main() {
@@ -47,11 +51,37 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   bool _isLoading = true;
+  double _parentBalance = 0.0;
+
+  Future<void> _fetchParentInfo() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final token = authProvider.token;
+
+    try {
+      final response = await Client.dio.get(
+        '/parent/info',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          _parentBalance = (response.data['balance'] as num).toDouble();
+        });
+      }
+    } on DioException catch (e) {
+      print('Error fetching parent info: ${e.message}');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     _fetchInitialData();
+    _fetchParentInfo();
   }
 
   Future<void> _fetchInitialData() async {
@@ -64,9 +94,10 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> _refreshData() async {
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    await Provider.of<KidProvider>(context, listen: false)
-        .fetchKidsByParent(authProvider.token);
+    await Future.wait([
+      _fetchInitialData(),
+      _fetchParentInfo(),
+    ]);
   }
 
   @override
@@ -106,7 +137,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       icon: Icon(Icons.notifications,
                           color: whiteTextColor, size: 24.0),
                       onPressed: () {
-                        // Handle notification icon tap
+                        // Remove navigation to NotificationScreen from here
                         print('Notification icon tapped!');
                       },
                     ),
@@ -155,7 +186,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  '${user?.balance ?? 0.0}',
+                                  '$_parentBalance',
                                   style: TextStyle(
                                     color: whiteTextColor,
                                     fontSize: 24.0,

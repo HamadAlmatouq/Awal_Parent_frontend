@@ -4,6 +4,9 @@ import 'package:dio/dio.dart';
 class TaskServices {
   Future<void> createTask(Map<String, dynamic> taskData) async {
     try {
+      // Convert duration to string if it's not already
+      taskData['duration'] = taskData['duration'].toString();
+
       Response response = await Client.dio.post(
         "/parent/createTask",
         data: taskData,

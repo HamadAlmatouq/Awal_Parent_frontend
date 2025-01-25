@@ -14,11 +14,15 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> signup({
     required String username,
     required String password,
+    required String pname, // Add Pname parameter
+    required String email, // Add email parameter
   }) async {
     try {
       token = await AuthServices().signup(
         username: username,
         password: password,
+        pname: pname, // Pass Pname
+        email: email, // Pass email
       );
       if (token.isNotEmpty) {
         await setToken(token);
@@ -39,7 +43,8 @@ class AuthProvider extends ChangeNotifier {
     required String password,
   }) async {
     try {
-      token = await AuthServices().signin(username: username, password: password);
+      token =
+          await AuthServices().signin(username: username, password: password);
       if (token.isNotEmpty) {
         await setToken(token);
         print(token);

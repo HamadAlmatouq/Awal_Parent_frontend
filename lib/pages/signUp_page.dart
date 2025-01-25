@@ -8,6 +8,8 @@ class SignupPage extends StatelessWidget {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  final pnameController = TextEditingController(); // Add controller for Pname
+  final emailController = TextEditingController(); // Add controller for email
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +68,34 @@ class SignupPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 TextField(
+                  controller: pnameController,
+                  decoration: InputDecoration(
+                    hintText: 'Parent Name',
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    prefixIcon: const Icon(Icons.person_outline),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    hintText: 'Email',
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    prefixIcon: const Icon(Icons.email),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
                   decoration: InputDecoration(
                     hintText: 'Password',
                     filled: true,
@@ -106,13 +136,14 @@ class SignupPage extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          backgroundColor:
-                              const Color.fromARGB(255, 0, 0, 0),
+                          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
                         ),
                         onPressed: () async {
                           if (usernameController.text.isEmpty ||
                               passwordController.text.isEmpty ||
-                              confirmPasswordController.text.isEmpty) {
+                              confirmPasswordController.text.isEmpty ||
+                              pnameController.text.isEmpty ||
+                              emailController.text.isEmpty) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               content: Text("Please fill in all fields"),
@@ -130,17 +161,20 @@ class SignupPage extends StatelessWidget {
                           var result = await Provider.of<AuthProvider>(context,
                                   listen: false)
                               .signup(
-                                  username: usernameController.text,
-                                  password: passwordController.text);
+                            username: usernameController.text,
+                            password: passwordController.text,
+                            pname: pnameController.text, // Add Pname
+                            email: emailController.text, // Add email
+                          );
                           if (result) {
                             context.go("/home");
                           } else {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
-                              content: Text(
-                                  "Sign up failed, please try again."),
+                              content:
+                                  Text("Sign up failed, please try again."),
                             ));
-                          } 
+                          }
                         },
                         child: const Text(
                           "Sign Up",
@@ -153,7 +187,8 @@ class SignupPage extends StatelessWidget {
                           context.push('/signin');
                         },
                         child: const Text("Already have an account? Sign in",
-                            style: TextStyle(color: Color.fromARGB(255, 219, 219, 219))),
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 219, 219, 219))),
                       ),
                     ],
                   ),

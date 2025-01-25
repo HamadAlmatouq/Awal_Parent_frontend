@@ -29,7 +29,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
       final taskData = {
         'title': taskName,
         'amount': int.tryParse(feesText) ?? 0,
-        'duration': durationText,
+        'duration': durationText.toString(), // Ensure duration is a string
         'Kname': widget.kidName,
       };
 

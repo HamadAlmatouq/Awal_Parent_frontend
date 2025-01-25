@@ -2,6 +2,7 @@ import 'package:bkid_frontend/pages/add_kid_page.dart';
 import 'package:bkid_frontend/pages/allowance_dialogue.dart';
 import 'package:bkid_frontend/pages/goals_page.dart';
 import 'package:bkid_frontend/pages/home_page.dart';
+import 'package:bkid_frontend/pages/notification_page.dart';
 import 'package:bkid_frontend/pages/restrictions_page.dart';
 import 'package:bkid_frontend/pages/signIn_page.dart';
 import 'package:bkid_frontend/pages/signUp_page.dart';
@@ -84,6 +85,12 @@ class MainApp extends StatelessWidget {
         GoRoute(
           path: '/Transfer',
           builder: (context, state) => TransferDialog(),
+        ),
+        GoRoute(
+          path: '/notifications',
+          builder: (context, state) => NotificationScreen(
+            kidName: state.extra as String, // Pass the kidName to notifications
+          ),
         ),
       ],
     );

@@ -1,5 +1,6 @@
 import 'package:bkid_frontend/pages/allowance_dialogue.dart';
 import 'package:bkid_frontend/pages/goals_page.dart';
+import 'package:bkid_frontend/pages/notification_page.dart';
 import 'package:bkid_frontend/pages/restrictions_page.dart';
 import 'package:bkid_frontend/pages/tasks_page.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,10 @@ class ViewKidCard extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.notifications, color: Colors.white),
-            onPressed: () {},
+            onPressed: () {
+              context.push('/notifications',
+                  extra: kid['Kname']); // Use GoRouter
+            },
           ),
         ],
       ),
