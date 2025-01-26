@@ -2750,7 +2750,7 @@ class ViewKidCard extends StatelessWidget {
         'points': 3213,
         'required': 1500,
         'color': whiteCard,
-        'requested': true
+        // 'requested': true
       },
       {
         'title': 'Kidzania',
