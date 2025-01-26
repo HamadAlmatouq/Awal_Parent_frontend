@@ -61,7 +61,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
-          },
+          },                          
         ),
       );
 
