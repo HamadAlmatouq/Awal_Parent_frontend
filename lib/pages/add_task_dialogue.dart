@@ -324,7 +324,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
               ),
               const SizedBox(height: 16),
               const Text(
-                'Fees',
+                'Amount',
                 style: TextStyle(
                   fontSize: 18,
                   fontFamily: 'Inter',
