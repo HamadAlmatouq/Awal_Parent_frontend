@@ -430,7 +430,7 @@ class NewTaskCard extends StatelessWidget {
           child: Center(
             child: IconButton(
               icon: Icon(Icons.remove_circle_outline,
-                  color: Colors.white, size: 20),
+                  color: Colors.white, size: 24),
               onPressed: onDelete,
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(),
