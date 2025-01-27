@@ -46,10 +46,12 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access to your photo library to select pictures for your goals.</string>
+	<string>Awal needs access to photo library to let you select images for your goals</string>
 	<key>NSCameraUsageDescription</key>
-	<string>We need access to the camera to take pictures for your goals.</string>
+	<string>Awal needs access to camera to let you take photos for your goals</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>We need access to the microphone for video recording.</string>
+	<string>Awal needs access to microphone when you record videos for your goals</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Awal needs access to save photos to your library</string>
 </dict>
 </plist>
