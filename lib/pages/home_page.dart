@@ -196,7 +196,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           SizedBox(height: 30.0),
                           Center(
                             child: Text(
-                              '4152 540X XXXX XXXX',
+                              '4152 5401 XXXX XXXX',
                               style: TextStyle(
                                 color: whiteText,
                                 fontSize: 18.0,

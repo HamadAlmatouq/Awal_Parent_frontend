@@ -1,4 +1,5 @@
 import 'package:bkid_frontend/services/transfer_service.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bkid_frontend/providers/kid_provider.dart';
@@ -22,20 +23,42 @@ class _TransferDialogState extends State<TransferDialog> {
       setState(() {
         errorMessage = 'Please fill in all fields.';
       });
-    } else {
-      final transferData = {
-        'amount': int.tryParse(amountText) ?? 0,
-        'Kname': selectedKid,
-      };
+      return;
+    }
 
-      try {
-        await TransferServices().createTransfer(transferData);
-        Navigator.pop(context, transferData);
-      } catch (e) {
-        setState(() {
+    // Add validation for numeric input
+    if (!RegExp(r'^\d+$').hasMatch(amountText)) {
+      setState(() {
+        errorMessage = 'Amount must be a valid number';
+      });
+      return;
+    }
+
+    final amount = int.tryParse(amountText) ?? 0;
+    if (amount <= 0) {
+      setState(() {
+        errorMessage = 'Amount must be greater than 0';
+      });
+      return;
+    }
+
+    final transferData = {
+      'amount': amount,
+      'Kname': selectedKid,
+    };
+
+    try {
+      await TransferServices().createTransfer(transferData);
+      Navigator.pop(context, transferData);
+    } catch (e) {
+      setState(() {
+        // Extract error message from DioException or use toString()
+        if (e is DioException && e.response?.data != null) {
+          errorMessage = e.response?.data['message'] ?? e.message;
+        } else {
           errorMessage = e.toString();
-        });
-      }
+        }
+      });
     }
   }
 

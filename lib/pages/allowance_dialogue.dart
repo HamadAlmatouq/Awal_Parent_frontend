@@ -1,4 +1,5 @@
 import 'package:bkid_frontend/services/allowance_services.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 const Color blueBackground = Color(0xFF2675CC); // Blue background
@@ -24,21 +25,42 @@ class _AllowanceDialogState extends State<AllowanceDialog> {
       setState(() {
         errorMessage = 'Please fill in all fields.';
       });
-    } else {
-      final allowanceData = {
-        'amount': int.tryParse(amountText) ?? 0,
-        'frequency': selectedFrequency,
-        'Kname': widget.kidName,
-      };
+      return;
+    }
 
-      try {
-        await AllowanceServices().createAllowance(allowanceData);
-        Navigator.pop(context, allowanceData);
-      } catch (e) {
-        setState(() {
+    // Add validation for numeric input
+    if (!RegExp(r'^\d+$').hasMatch(amountText)) {
+      setState(() {
+        errorMessage = 'Amount must be a valid number';
+      });
+      return;
+    }
+
+    final amount = int.tryParse(amountText) ?? 0;
+    if (amount <= 0) {
+      setState(() {
+        errorMessage = 'Amount must be greater than 0';
+      });
+      return;
+    }
+
+    final allowanceData = {
+      'amount': amount,
+      'frequency': selectedFrequency,
+      'Kname': widget.kidName,
+    };
+
+    try {
+      await AllowanceServices().createAllowance(allowanceData);
+      Navigator.pop(context, allowanceData);
+    } catch (e) {
+      setState(() {
+        if (e is DioException && e.response?.data != null) {
+          errorMessage = e.response?.data['message'] ?? e.message;
+        } else {
           errorMessage = e.toString();
-        });
-      }
+        }
+      });
     }
   }
 

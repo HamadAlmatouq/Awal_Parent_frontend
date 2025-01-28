@@ -58,6 +58,30 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
       return;
     }
 
+    // Add validation for numeric input for price
+    if (!RegExp(r'^\d+$').hasMatch(priceText)) {
+      setState(() {
+        errorMessage = 'Price must be a valid number';
+      });
+      return;
+    }
+
+    final price = int.tryParse(priceText) ?? 0;
+    if (price <= 0) {
+      setState(() {
+        errorMessage = 'Price must be greater than 0';
+      });
+      return;
+    }
+
+    // Add validation for date format
+    if (!RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(endDate)) {
+      setState(() {
+        errorMessage = 'Date must be in YYYY-MM-DD format';
+      });
+      return;
+    }
+
     try {
       String? base64Image;
       if (_image != null) {

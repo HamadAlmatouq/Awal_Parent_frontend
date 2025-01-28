@@ -57,7 +57,7 @@ class ViewKidCard extends StatelessWidget {
                     children: [
                       const SizedBox(height: 40),
                       const Text(
-                        '1234 5678 XXXX XXXX',
+                        '4152 5401 XXXX XXXX',
                         style: TextStyle(
                           fontSize: 18,
                           color: whiteText,
@@ -229,7 +229,8 @@ class ViewKidCard extends StatelessWidget {
           label,
           style: TextStyle(
             fontSize: 12,
-            color: color.withOpacity(0.5),
+            color:
+                whiteText, // Changed from color.withOpacity(0.5) to whiteText
           ),
         ),
       ],
