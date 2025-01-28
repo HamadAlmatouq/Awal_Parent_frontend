@@ -183,83 +183,83 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                           height: 35,
                           decoration: BoxDecoration(
                             color: cardBackgroundColor,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: blueCardColor,
-                              width: 1,
-                            ),
+                            // borderRadius: BorderRadius.circular(10),
+                            // border: Border.all(
+                            //   color: blueCardColor,
+                            //   width: 1,
+                            // ),
                           ),
                           child: Row(
                             children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      isInProgress = true;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: 33,
-                                    decoration: BoxDecoration(
-                                      color: isInProgress
-                                          ? blueCardColor
-                                          : cardBackgroundColor,
-                                      borderRadius: BorderRadius.horizontal(
-                                        left: Radius.circular(10),
-                                      ),
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      'In Progress',
-                                      style: TextStyle(
-                                        color: isInProgress
-                                            ? whiteTextColor
-                                            : const Color(0xFF9A9A9A),
-                                        fontSize: 16,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 1,
-                                height: 34,
-                                color: blueCardColor,
-                              ),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      isInProgress = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: 33,
-                                    decoration: BoxDecoration(
-                                      color: !isInProgress
-                                          ? blueCardColor
-                                          : cardBackgroundColor,
-                                      borderRadius: BorderRadius.horizontal(
-                                        right: Radius.circular(10),
-                                      ),
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      'Done',
-                                      style: TextStyle(
-                                        color: !isInProgress
-                                            ? whiteTextColor
-                                            : const Color(0xFF9A9A9A),
-                                        fontSize: 16,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              // Expanded(
+                              //   child: GestureDetector(
+                              //     onTap: () {
+                              //       setState(() {
+                              //         isInProgress = true;
+                              //       });
+                              //     },
+                              //     child: Container(
+                              //       height: 33,
+                              //       decoration: BoxDecoration(
+                              //         color: isInProgress
+                              //             ? blueCardColor
+                              //             : cardBackgroundColor,
+                              //         borderRadius: BorderRadius.horizontal(
+                              //           left: Radius.circular(10),
+                              //         ),
+                              //       ),
+                              //       alignment: Alignment.center,
+                              //       child: Text(
+                              //         'In Progress',
+                              //         style: TextStyle(
+                              //           color: isInProgress
+                              //               ? whiteTextColor
+                              //               : const Color(0xFF9A9A9A),
+                              //           fontSize: 16,
+                              //           fontFamily: 'Inter',
+                              //           fontWeight: FontWeight.w600,
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+                              // Container(
+                              //   width: 1,
+                              //   height: 34,
+                              //   color: blueCardColor,
+                              // ),
+                              // Expanded(
+                              //   child: GestureDetector(
+                              //     onTap: () {
+                              //       setState(() {
+                              //         isInProgress = false;
+                              //       });
+                              //     },
+                              //     child: Container(
+                              //       height: 33,
+                              //       decoration: BoxDecoration(
+                              //         color: !isInProgress
+                              //             ? blueCardColor
+                              //             : cardBackgroundColor,
+                              //         borderRadius: BorderRadius.horizontal(
+                              //           right: Radius.circular(10),
+                              //         ),
+                              //       ),
+                              //       alignment: Alignment.center,
+                              //       child: Text(
+                              //         'Done',
+                              //         style: TextStyle(
+                              //           color: !isInProgress
+                              //               ? whiteTextColor
+                              //               : const Color(0xFF9A9A9A),
+                              //           fontSize: 16,
+                              //           fontFamily: 'Inter',
+                              //           fontWeight: FontWeight.w600,
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         );
