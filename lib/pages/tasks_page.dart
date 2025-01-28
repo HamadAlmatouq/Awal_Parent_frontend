@@ -8,6 +8,7 @@ const Color blueCardColor = Color(0xFF2575CC);
 const Color newCardColor = Color(0xFF7CACE0);
 const Color whiteTextColor = Color(0xFFFFFFFF);
 const Color blueTextColor = Color(0xFF2575CC);
+const Color whiteCard = Color(0xFFFFFFFF);
 
 class CreateTaskScreen extends StatefulWidget {
   final String kidName;
@@ -33,18 +34,14 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     try {
       List<Map<String, dynamic>> tasks =
           await TaskServices().getTasksByKidName(widget.kidName);
-      print("Fetched tasks: $tasks"); // Debug print
       setState(() {
         inProgressTasks = tasks
             .where((task) =>
                 task['status'] == 'in_progress' || task['status'] == null)
             .toList();
         doneTasks = tasks.where((task) => task['status'] == 'done').toList();
-        print("In Progress Tasks: $inProgressTasks"); // Debug print
-        print("Done Tasks: $doneTasks"); // Debug print
       });
     } catch (e) {
-      print("Error fetching tasks: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error fetching tasks: $e')),
       );
@@ -65,7 +62,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   }
 
   Future<void> deleteTask(String title) async {
-    // Show confirmation dialog
     bool? confirmDelete = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -93,6 +89,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 'Cancel',
                 style: TextStyle(
                   color: Colors.grey,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -112,13 +109,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     );
 
     if (confirmDelete == true) {
-      if (title.isEmpty || widget.kidName.isEmpty) {
-        print('Error: title or Kname is empty');
-        return;
-      }
-
       try {
-        print('Deleting task with title: $title and Kname: ${widget.kidName}');
         await TaskServices().deleteTask(title, widget.kidName);
         setState(() {
           inProgressTasks.removeWhere((task) =>
@@ -127,7 +118,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
               task['title'] == title && task['Kname'] == widget.kidName);
         });
       } catch (e) {
-        print('Error deleting task: $e');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to delete task: $e'),
@@ -171,7 +161,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       ),
       body: Column(
         children: [
-          // Main Content
           Expanded(
             child: Container(
               width: double.infinity,
@@ -184,142 +173,104 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
               ),
               child: Column(
                 children: [
-                  // Tab Switcher
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 16.0),
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        return Container(
-                          width: constraints.maxWidth,
-                          height: 35,
-                          decoration: BoxDecoration(
-                            color: cardBackgroundColor,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: blueCardColor,
-                              width: 1,
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      isInProgress = true;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: 33,
-                                    decoration: BoxDecoration(
-                                      color: isInProgress
-                                          ? blueCardColor
-                                          : cardBackgroundColor,
-                                      borderRadius: BorderRadius.horizontal(
-                                        left: Radius.circular(10),
-                                      ),
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      'In Progress',
-                                      style: TextStyle(
-                                        color: isInProgress
-                                            ? whiteTextColor
-                                            : const Color(0xFF9A9A9A),
-                                        fontSize: 16,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 1,
-                                height: 34,
-                                color: blueCardColor,
-                              ),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      isInProgress = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: 33,
-                                    decoration: BoxDecoration(
-                                      color: !isInProgress
-                                          ? blueCardColor
-                                          : cardBackgroundColor,
-                                      borderRadius: BorderRadius.horizontal(
-                                        right: Radius.circular(10),
-                                      ),
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      'Done',
-                                      style: TextStyle(
-                                        color: !isInProgress
-                                            ? whiteTextColor
-                                            : const Color(0xFF9A9A9A),
-                                        fontSize: 16,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                  const Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal:
+                          32.0, // Changed from EdgeInsets.only to symmetric
+                      vertical: 24.0,
                     ),
-                  ),
-                  // Task List
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Column(
-                          children: (isInProgress ? inProgressTasks : doneTasks)
-                              .asMap()
-                              .entries
-                              .map((entry) {
-                            int index = entry.key;
-                            Map<String, dynamic> task = entry.value;
-                            print("Task: $task"); // Debug print
-                            return NewTaskCard(
-                              taskName: task['title'] ?? '',
-                              fees: task['amount'] ?? 0,
-                              duration: task['duration'].toString(),
-                              onDelete: () async {
-                                await deleteTask(task['title'] ?? '');
-                                setState(() {
-                                  if (isInProgress) {
-                                    inProgressTasks.removeAt(index);
-                                  } else {
-                                    doneTasks.removeAt(index);
-                                  }
-                                });
-                              },
-                              onComplete: isInProgress
-                                  ? () => completeTask(index)
-                                  : null,
-                            );
-                          }).toList(),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Tasks',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: blueTextColor,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  AddTaskButton(onPressed: addTask),
-                  SizedBox(height: 16),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                        child: inProgressTasks.isEmpty
+                            ? _buildEmptyState()
+                            : Column(
+                                children: inProgressTasks
+                                    .asMap()
+                                    .entries
+                                    .map((entry) {
+                                  int index = entry.key;
+                                  Map<String, dynamic> task = entry.value;
+                                  return NewTaskCard(
+                                    taskName: task['title'] ?? '',
+                                    fees: task['amount'] ?? 0,
+                                    duration: task['duration'].toString(),
+                                    onDelete: () async {
+                                      await deleteTask(task['title'] ?? '');
+                                      setState(() {
+                                        if (isInProgress) {
+                                          inProgressTasks.removeAt(index);
+                                        } else {
+                                          doneTasks.removeAt(index);
+                                        }
+                                      });
+                                    },
+                                    onComplete: isInProgress
+                                        ? () => completeTask(index)
+                                        : null,
+                                  );
+                                }).toList(),
+                              ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32.0,
+                      vertical: 24.0,
+                    ),
+                    child: AddTaskButton(onPressed: addTask),
+                  ),
                 ],
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 40),
+          Icon(
+            Icons.assignment_outlined,
+            size: 70,
+            color: blueTextColor.withOpacity(0.5),
+          ),
+          SizedBox(height: 16),
+          Text(
+            'No Tasks Yet',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: blueTextColor,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            'Create a task by clicking the button below',
+            style: TextStyle(
+              fontSize: 14,
+              color: blueTextColor.withOpacity(0.7),
+            ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -345,60 +296,110 @@ class NewTaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: newCardColor,
-      margin: EdgeInsets.symmetric(vertical: 8.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Task Name: $taskName',
-              style: TextStyle(
-                color: whiteTextColor,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Fees: $fees KWD',
-              style: TextStyle(
-                color: whiteTextColor,
-                fontSize: 14,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Duration: $duration',
-              style: TextStyle(
-                color: whiteTextColor,
-                fontSize: 14,
-              ),
-            ),
-            SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+    return Stack(
+      children: [
+        Card(
+          color: newCardColor,
+          margin: EdgeInsets.symmetric(vertical: 8.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IconButton(
-                  icon: Icon(Icons.delete, color: Colors.red),
-                  onPressed: onDelete,
-                ),
-                if (onComplete != null)
-                  IconButton(
-                    icon: Icon(Icons.check, color: Colors.green),
-                    onPressed: onComplete,
+                Text(
+                  'Task Name:',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: whiteTextColor,
+                    fontWeight: FontWeight.bold,
                   ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  taskName,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: whiteTextColor,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Duration:',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: whiteTextColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            '$duration h',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: whiteTextColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Amount:',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: whiteTextColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            '$fees KD',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: whiteTextColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
-          ],
+          ),
         ),
-      ),
+        Positioned(
+          right: 16,
+          top: 0,
+          bottom: 0,
+          child: Center(
+            child: IconButton(
+              icon: Icon(Icons.remove_circle_outline,
+                  color: Colors.white, size: 24),
+              onPressed: onDelete,
+              padding: EdgeInsets.zero,
+              constraints: BoxConstraints(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -413,38 +414,36 @@ class AddTaskButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: GestureDetector(
-        onTap: onPressed,
-        child: Container(
-          height: 48,
-          width: double.infinity, // Make the button fit the width of the page
-          decoration: BoxDecoration(
-            color: blueCardColor,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-                color: blueCardColor,
-                width: 1,
-                style: BorderStyle.solid // Dotted border style
-                ),
+    return GestureDetector(
+      // Removed the extra Padding widget
+      onTap: onPressed,
+      child: Container(
+        height: 48,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: whiteCard,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: blueTextColor,
+            width: 1,
+            style: BorderStyle.solid,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.add, color: whiteTextColor),
-              const SizedBox(width: 8),
-              const Text(
-                'Add Task',
-                style: TextStyle(
-                  color: whiteTextColor,
-                  fontSize: 12,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w600,
-                ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.add, color: blueTextColor),
+            const SizedBox(width: 8),
+            const Text(
+              'Add Task',
+              style: TextStyle(
+                color: blueTextColor,
+                fontSize: 12,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w600,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

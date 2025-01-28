@@ -1,5 +1,8 @@
 import 'package:bkid_frontend/services/task_services.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+
+const Color blueBackground = Color(0xFF2675CC); // Blue background
 
 class AddTaskDialog extends StatefulWidget {
   final String kidName;
@@ -25,22 +28,59 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
       setState(() {
         errorMessage = 'Please fill in all fields.';
       });
-    } else {
-      final taskData = {
-        'title': taskName,
-        'amount': int.tryParse(feesText) ?? 0,
-        'duration': durationText.toString(), // Ensure duration is a string
-        'Kname': widget.kidName,
-      };
+      return;
+    }
 
-      try {
-        await TaskServices().createTask(taskData);
-        Navigator.pop(context, taskData);
-      } catch (e) {
-        setState(() {
+    // Add validation for numeric input for fees
+    if (!RegExp(r'^\d+$').hasMatch(feesText)) {
+      setState(() {
+        errorMessage = 'Amount must be a valid number';
+      });
+      return;
+    }
+
+    final fees = int.tryParse(feesText) ?? 0;
+    if (fees <= 0) {
+      setState(() {
+        errorMessage = 'Amount must be greater than 0';
+      });
+      return;
+    }
+
+    // Add validation for duration format
+    if (!RegExp(r'^\d+$').hasMatch(durationText)) {
+      setState(() {
+        errorMessage = 'Duration must be a valid number';
+      });
+      return;
+    }
+
+    final duration = int.tryParse(durationText) ?? 0;
+    if (duration <= 0) {
+      setState(() {
+        errorMessage = 'Duration must be greater than 0';
+      });
+      return;
+    }
+
+    final taskData = {
+      'title': taskName,
+      'amount': fees,
+      'duration': duration.toString(),
+      'Kname': widget.kidName,
+    };
+
+    try {
+      await TaskServices().createTask(taskData);
+      Navigator.pop(context, taskData);
+    } catch (e) {
+      setState(() {
+        if (e is DioException && e.response?.data != null) {
+          errorMessage = e.response?.data['message'] ?? e.message;
+        } else {
           errorMessage = e.toString();
-        });
-      }
+        }
+      });
     }
   }
 
@@ -100,7 +140,11 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFFD3CDCD)),
+                    borderSide: BorderSide(color: blueBackground),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: blueBackground),
                   ),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
@@ -108,7 +152,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
               ),
               const SizedBox(height: 16),
               const Text(
-                'Fees',
+                'Amount',
                 style: TextStyle(
                   fontSize: 18,
                   fontFamily: 'Inter',
@@ -133,7 +177,11 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFFD3CDCD)),
+                    borderSide: BorderSide(color: blueBackground),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: blueBackground),
                   ),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
@@ -161,7 +209,11 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFFD3CDCD)),
+                    borderSide: BorderSide(color: blueBackground),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: blueBackground),
                   ),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 16),

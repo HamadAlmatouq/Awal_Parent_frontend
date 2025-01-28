@@ -193,7 +193,7 @@ class SigninPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 2),
 
                 // Sign Up
                 TextButton(
@@ -202,7 +202,7 @@ class SigninPage extends StatelessWidget {
                   },
                   child: const Text(
                     "Don't have an account? Sign up",
-                    style: TextStyle(color: Colors.blue),
+                    style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
                   ),
                 ),
               ],

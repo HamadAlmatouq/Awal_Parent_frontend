@@ -1,9 +1,16 @@
-import 'package:bkid_frontend/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
+const Color blueBackground = Color(0xFF2675CC); // Blue background
+const Color blueCard = Color(0xFF7CACE0); // Blue card
+const Color blueText = Color(0xFF2575CC); // Blue text
+const Color whiteText = Color(0xFFFFFFFF); // White text
+const Color whiteCard = Color(0xFFFFFFFF); // White card
+
 class RestrictionsPage extends StatefulWidget {
+  const RestrictionsPage({super.key});
+
   @override
   _RestrictionsPageState createState() => _RestrictionsPageState();
 }
@@ -12,188 +19,231 @@ class _RestrictionsPageState extends State<RestrictionsPage> {
   bool enableRestrictions = true;
   bool fractionToSaving = true;
   bool allowOnlinePayment = true;
-  bool foodAndDrinks = true;
-  bool entertainment = false;
-  bool shopping = true;
-
-  List<String> categories = ['Food & Drinks', 'Entertainment', 'Shopping'];
-  List<String> restrictedCategories = [];
+  bool blockCardUsage = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: blueBackground,
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: blueBackground,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          icon: const Icon(Icons.arrow_back, color: whiteText),
+          onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Restrictions', style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'Restrictions',
+          style: TextStyle(color: whiteText, fontSize: 20),
+        ),
+        centerTitle: true,
       ),
       body: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        margin: const EdgeInsets.only(top: 20),
+        decoration: const BoxDecoration(
+          color: whiteCard,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
         ),
-        child: ListView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              title: Text(
-                'Enable Restrictions',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              trailing: CupertinoSwitch(
-                value: enableRestrictions,
-                onChanged: (value) {
-                  setState(() {
-                    enableRestrictions = value;
-                  });
-                },
-                activeColor: Colors.green,
-              ),
+            // Enable Restrictions Toggle
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Enable Restrictions',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                CupertinoSwitch(
+                  value: enableRestrictions,
+                  onChanged: (value) {
+                    setState(() => enableRestrictions = value);
+                  },
+                  activeColor: Colors.green,
+                ),
+              ],
             ),
-            Divider(),
-            _buildInputField('Daily spending limits', 'amount... KD', enableRestrictions),
-            SizedBox(height: 16),
-            _buildCardBlockRow(enableRestrictions),
-            SizedBox(height: 16),
-            _buildInputField('Saving limits account', 'amount... KD', enableRestrictions),
-            SizedBox(height: 16),
-                       _buildToggle('Allow online payment', allowOnlinePayment, enableRestrictions, (value) {
-              setState(() {
-                allowOnlinePayment = value;
-              });
-            }),
-           
-            _buildToggle('Fraction to saving', fractionToSaving, enableRestrictions, (value) {
-              setState(() {
-                fractionToSaving = value;
-              });
-            }),
-            SizedBox(height: 16),
-            _buildCategoryRestrictions(enableRestrictions),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: enableRestrictions ? () {
-                context.pop();
-              } : null,
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+            const Divider(height: 40),
+
+            // Saving Limits Account
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Saving limits account',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(
+                  width: 150,
+                  child: TextField(
+                    enabled: enableRestrictions,
+                    decoration: InputDecoration(
+                      hintText: 'amount...',
+                      suffixText: 'KD',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: Colors.grey.shade300),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: Colors.grey.shade300),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: blueBackground),
+                      ),
+                      filled: true,
+                      fillColor: enableRestrictions
+                          ? Colors.white
+                          : Colors.grey.shade100,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+
+            // Daily Spending Limits
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Daily spending limits',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(
+                  width: 150,
+                  child: TextField(
+                    enabled: enableRestrictions,
+                    decoration: InputDecoration(
+                      hintText: 'amount...',
+                      suffixText: 'KD',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: Colors.grey.shade300),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: Colors.grey.shade300),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: blueBackground),
+                      ),
+                      filled: true,
+                      fillColor: enableRestrictions
+                          ? Colors.white
+                          : Colors.grey.shade100,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+
+            // Block Card Usage Toggle
+            _buildToggle(
+              'Block the card usage',
+              blockCardUsage,
+              enableRestrictions,
+              (value) {
+                setState(() => blockCardUsage = value);
+              },
+            ),
+            const SizedBox(height: 24),
+
+            // Fraction to Saving Toggle
+            _buildToggle(
+              'Fraction to saving',
+              fractionToSaving,
+              enableRestrictions,
+              (value) {
+                setState(() => fractionToSaving = value);
+              },
+            ),
+            const SizedBox(height: 24),
+
+            // Allow Online Payment Toggle
+            _buildToggle(
+              'Allow online payment',
+              allowOnlinePayment,
+              enableRestrictions,
+              (value) {
+                setState(() => allowOnlinePayment = value);
+              },
+            ),
+            const Spacer(),
+
+            // Save Button
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: enableRestrictions ? () => context.pop() : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: blueBackground,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
+                child: const Text(
+                  'Save',
+                  style: TextStyle(
+                    color: whiteText,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-              child: Text('Save'),
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInputField(String label, String hint, bool enabled) {
-    return TextField(
-      enabled: enabled,
-      decoration: InputDecoration(
-        labelText: label,
-        hintText: hint,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCardBlockRow(bool enabled) {
+  Widget _buildToggle(
+      String title, bool value, bool enabled, ValueChanged<bool> onChanged) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildCardBlockButton('Block Card', Colors.red, enabled),
-        _buildCardBlockButton('Unblock Card', Colors.green, enabled),
-      ],
-    );
-  }
-
-  Widget _buildCardBlockButton(String label, Color color, bool enabled) {
-    return ElevatedButton(
-      onPressed: enabled ? () {} : null,
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: enabled ? color : Colors.grey,
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-      child: Text(label),
-    );
-  }
-
-  Widget _buildToggle(String title, bool value, bool enabled, ValueChanged<bool> onChanged) {
-    return ListTile(
-      title: Text(
-        title,
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: enabled ? Colors.black : Colors.grey),
-      ),
-      trailing: CupertinoSwitch(
-        value: value,
-        onChanged: enabled ? onChanged : null,
-        activeColor: Colors.green,
-      ),
-    );
-  }
-
-  Widget _buildCategoryRestrictions(bool enabled) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
         Text(
-          'Category Restrictions',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: enabled ? Colors.black : Colors.grey),
+          title,
+          style: TextStyle(
+            fontSize: 16,
+            color: enabled ? Colors.black : Colors.grey,
+          ),
         ),
-        SizedBox(height: 8),
-        DropdownButtonFormField<String>(
-          value: null,
-          hint: Text('Select category'),
-          items: categories.map((String category) {
-            return DropdownMenuItem<String>(
-              value: category,
-              child: Text(category),
-            );
-          }).toList(),
-          onChanged: enabled
-              ? (String? newValue) {
-                  if (newValue != null && !restrictedCategories.contains(newValue)) {
-                    setState(() {
-                      restrictedCategories.add(newValue);
-                    });
-                  }
-                }
-              : null,
-        ),
-        SizedBox(height: 8),
-        Wrap(
-          spacing: 8.0,
-          children: restrictedCategories.map((String category) {
-            return Chip(
-              label: Text(category),
-              deleteIcon: Icon(Icons.close),
-              onDeleted: () {
-                setState(() {
-                  restrictedCategories.remove(category);
-                });
-              },
-            );
-          }).toList(),
+        CupertinoSwitch(
+          value: value,
+          onChanged: enabled ? onChanged : null,
+          activeColor: Colors.green,
+          trackColor: Colors.grey,
         ),
       ],
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: RestrictionsPage(),
+    theme: ThemeData(
+      primaryColor: blueBackground,
+      scaffoldBackgroundColor: blueBackground,
+    ),
+  ));
 }

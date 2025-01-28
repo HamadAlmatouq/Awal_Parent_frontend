@@ -4,6 +4,8 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:convert';
 
+const Color backgroundColor = Color(0xFF2575CC); // Blue background
+
 class AddGoalsDialog extends StatefulWidget {
   const AddGoalsDialog({Key? key}) : super(key: key);
 
@@ -52,6 +54,30 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
     if (goalName.isEmpty || priceText.isEmpty || endDate.isEmpty) {
       setState(() {
         errorMessage = 'Please fill in all fields.';
+      });
+      return;
+    }
+
+    // Add validation for numeric input for price
+    if (!RegExp(r'^\d+$').hasMatch(priceText)) {
+      setState(() {
+        errorMessage = 'Price must be a valid number';
+      });
+      return;
+    }
+
+    final price = int.tryParse(priceText) ?? 0;
+    if (price <= 0) {
+      setState(() {
+        errorMessage = 'Price must be greater than 0';
+      });
+      return;
+    }
+
+    // Add validation for date format
+    if (!RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(endDate)) {
+      setState(() {
+        errorMessage = 'Date must be in YYYY-MM-DD format';
       });
       return;
     }
@@ -162,9 +188,13 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
                     fontSize: 14,
                     fontFamily: 'Inter',
                   ),
-                  border: OutlineInputBorder(
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: backgroundColor),
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFFD3CDCD)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFD3CDCD)),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
@@ -195,9 +225,13 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
                     fontSize: 14,
                     fontFamily: 'Inter',
                   ),
-                  border: OutlineInputBorder(
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: backgroundColor),
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFFD3CDCD)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFD3CDCD)),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
@@ -223,9 +257,13 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
                     fontSize: 14,
                     fontFamily: 'Inter',
                   ),
-                  border: OutlineInputBorder(
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: backgroundColor),
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFFD3CDCD)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFD3CDCD)),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 16),

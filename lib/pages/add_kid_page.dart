@@ -22,7 +22,8 @@ class _AddKidPageState extends State<AddKidPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF2575CC),
-      body: SafeArea(
+      body: Padding(
+        padding: const EdgeInsets.only(top: 40.0), // Added top padding
         child: Column(
           children: [
             // Header
@@ -30,21 +31,20 @@ class _AddKidPageState extends State<AddKidPage> {
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 children: [
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Image.network(
-                      'https://dashboard.codeparrot.ai/api/assets/Z44LmL9JV5SvYOsm',
-                      width: 25,
-                      height: 38,
-                    ),
+                  IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () => Navigator.pop(context),
                   ),
-                  const SizedBox(width: 16),
-                  const Text(
-                    'Add Kid account',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                  Expanded(
+                    child: Center(
+                      child: const Text(
+                        'Add Kid account',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -86,6 +86,11 @@ class _AddKidPageState extends State<AddKidPage> {
                               borderRadius: BorderRadius.circular(8),
                               borderSide:
                                   const BorderSide(color: Color(0xFFD9D9D9)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide:
+                                  const BorderSide(color: Color(0xFF2575CC)),
                             ),
                           ),
                           validator: (value) {
@@ -151,6 +156,7 @@ class _AddKidPageState extends State<AddKidPage> {
                                   termsAccepted = value ?? false;
                                 });
                               },
+                              activeColor: Color(0xFF2575CC), // Custom color
                             ),
                             const Text(
                               'Terms and Conditions',
@@ -245,6 +251,10 @@ class _AddKidPageState extends State<AddKidPage> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: Color(0xFFD9D9D9)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Color(0xFF2575CC)),
             ),
           ),
           validator: validator,

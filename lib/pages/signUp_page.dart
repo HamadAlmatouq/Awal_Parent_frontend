@@ -14,183 +14,127 @@ class SignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Sign Up"),
-        centerTitle: true,
-        elevation: 0,
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              const Color.fromARGB(207, 42, 148, 235),
-              Colors.grey,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      backgroundColor: const Color(0xFF2575CC),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
-                  "Awal",
+                const SizedBox(height: 80),
+                Text(
+                  'awal.',
                   style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
                     color: Colors.white,
+                    fontSize: 128,
+                    fontFamily: 'Jua',
+                    letterSpacing: -0.23,
+                    height: 0.16,
                   ),
                 ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Create your account",
+                const SizedBox(height: 60),
+                Text(
+                  "Your child's future starts here",
                   style: TextStyle(
-                    fontSize: 18,
                     color: Colors.white,
+                    fontSize: 20,
+                    fontFamily: 'Jua',
+                    letterSpacing: -0.23,
                   ),
                 ),
                 const SizedBox(height: 40),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Username',
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    prefixIcon: const Icon(Icons.person),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
+
+                // Username Field
+                _buildInputField('Username', usernameController, false),
+                const SizedBox(height: 20),
+
+                // Parent Name Field
+                _buildInputField('Parent Name', pnameController, false),
+                const SizedBox(height: 20),
+
+                // Email Field
+                _buildInputField('Email', emailController, false),
+                const SizedBox(height: 20),
+
+                // Password Field
+                _buildInputField('Password', passwordController, true),
+                const SizedBox(height: 20),
+
+                // Confirm Password Field
+                _buildInputField(
+                    'Confirm Password', confirmPasswordController, true),
+                const SizedBox(height: 40),
+
+                // Sign Up Button
+                ElevatedButton(
+                  onPressed: () async {
+                    if (usernameController.text.isEmpty ||
+                        passwordController.text.isEmpty ||
+                        confirmPasswordController.text.isEmpty ||
+                        pnameController.text.isEmpty ||
+                        emailController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text("Please fill in all fields")),
+                      );
+                      return;
+                    }
+                    if (passwordController.text !=
+                        confirmPasswordController.text) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Passwords do not match")),
+                      );
+                      return;
+                    }
+                    var result =
+                        await Provider.of<AuthProvider>(context, listen: false)
+                            .signup(
+                      username: usernameController.text,
+                      password: passwordController.text,
+                      pname: pnameController.text,
+                      email: emailController.text,
+                    );
+                    if (result) {
+                      context.go("/home");
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text("Sign up failed, please try again.")),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    minimumSize: Size(double.infinity, 51),
+                  ),
+                  child: Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      color: Color(0xFF2575CC),
+                      fontSize: 24,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: -0.23,
                     ),
                   ),
-                  controller: usernameController,
                 ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: pnameController,
-                  decoration: InputDecoration(
-                    hintText: 'Parent Name',
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    prefixIcon: const Icon(Icons.person_outline),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
+                const SizedBox(height: 20),
+
+                // Sign In Link
+                TextButton(
+                  onPressed: () => context.push('/signin'),
+                  child: Text(
+                    'Already have an account? Sign in',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontFamily: 'Inter',
+                      letterSpacing: -0.23,
                     ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    hintText: 'Email',
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    prefixIcon: const Icon(Icons.email),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    prefixIcon: const Icon(Icons.lock),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  controller: passwordController,
-                  obscureText: true,
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Confirm Password',
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    prefixIcon: const Icon(Icons.lock),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  controller: confirmPasswordController,
-                  obscureText: true,
-                ),
-                const SizedBox(height: 30),
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.only(
-                              top: 20, bottom: 20, left: 30, right: 30),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-                        ),
-                        onPressed: () async {
-                          if (usernameController.text.isEmpty ||
-                              passwordController.text.isEmpty ||
-                              confirmPasswordController.text.isEmpty ||
-                              pnameController.text.isEmpty ||
-                              emailController.text.isEmpty) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: Text("Please fill in all fields"),
-                            ));
-                            return;
-                          }
-                          if (passwordController.text !=
-                              confirmPasswordController.text) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: Text("Passwords do not match"),
-                            ));
-                            return;
-                          }
-                          var result = await Provider.of<AuthProvider>(context,
-                                  listen: false)
-                              .signup(
-                            username: usernameController.text,
-                            password: passwordController.text,
-                            pname: pnameController.text, // Add Pname
-                            email: emailController.text, // Add email
-                          );
-                          if (result) {
-                            context.go("/home");
-                          } else {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content:
-                                  Text("Sign up failed, please try again."),
-                            ));
-                          }
-                        },
-                        child: const Text(
-                          "Sign Up",
-                          style: TextStyle(fontSize: 22, color: Colors.white),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      TextButton(
-                        onPressed: () {
-                          context.push('/signin');
-                        },
-                        child: const Text("Already have an account? Sign in",
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 219, 219, 219))),
-                      ),
-                    ],
                   ),
                 ),
               ],
@@ -198,6 +142,47 @@ class SignupPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildInputField(
+      String label, TextEditingController controller, bool isPassword) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 15,
+            fontFamily: 'Inter',
+            letterSpacing: -0.23,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white),
+          ),
+          child: TextField(
+            controller: controller,
+            obscureText: isPassword,
+            decoration: InputDecoration(
+              hintText: '$label...',
+              hintStyle: TextStyle(
+                color: Color(0xFFA9A9A9),
+                fontSize: 15,
+                fontFamily: 'Inter',
+                letterSpacing: -0.23,
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 20),
+              border: InputBorder.none,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

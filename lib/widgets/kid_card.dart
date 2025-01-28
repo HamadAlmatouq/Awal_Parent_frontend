@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:bkid_frontend/pages/view_kidCard_page.dart';
 
+const Color blueBackground = Color(0xFF2675CC); // Blue background
+const Color blueCard = Color(0xFF7CACE0); // Blue card
+const Color blueText = Color(0xFF2575CC); // Blue text
+const Color whiteText = Color(0xFFFFFFFF); // White text
+const Color whiteCard = Color(0xFFFFFFFF); // White card
+
 class KidCard extends StatelessWidget {
   final String name;
   final double balance;
   final double savings;
   final int steps;
-  final int points; // Add points parameter
+  final int points;
   final String image;
 
   KidCard({
@@ -14,7 +20,7 @@ class KidCard extends StatelessWidget {
     required this.balance,
     required this.savings,
     required this.steps,
-    required this.points, // Add points to constructor
+    required this.points,
     required this.image,
   });
 
@@ -25,7 +31,7 @@ class KidCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xFF2575CC),
+          backgroundColor: whiteCard,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -52,7 +58,7 @@ class KidCard extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: Colors.white,
+                  color: whiteCard,
                   width: 4.0,
                 ),
               ),
@@ -69,19 +75,24 @@ class KidCard extends StatelessWidget {
                 Text(
                   name,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: blueText,
                     fontSize: 16.0,
                   ),
                 ),
                 Text(
                   '$balance KWD',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: blueText,
                     fontSize: 16.0,
                   ),
                 ),
                 // Removed points display from here
               ],
+            ),
+            Spacer(),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: blueText,
             ),
           ],
         ),

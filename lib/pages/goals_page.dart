@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:bkid_frontend/pages/add_goal_dialogue.dart';
+import 'package:bkid_frontend/pages/tasks_page.dart';
 import 'package:bkid_frontend/services/goal_services.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
@@ -62,7 +63,6 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
   }
 
   Future<void> deleteGoal(String title) async {
-    // Show confirmation dialog
     bool? confirmDelete = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -90,6 +90,7 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
                 'Cancel',
                 style: TextStyle(
                   color: Colors.grey,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -157,216 +158,110 @@ class _GoalsManagingScreenState extends State<GoalsManagingScreen> {
         ),
         centerTitle: true,
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Main Content
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25),
-                  ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
                 ),
-                child: Column(
-                  children: [
-                    /*
-                    /
-                    /
-                    /
-                    /
-                    /
-                    /
-                    // Tab Switcher
-                    /
-                    /
-                    /
-                    /
-                    /
-                    */
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 16.0),
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          return Container(
-                            width: constraints.maxWidth,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: const Color(0xFF2575CC),
-                                width: 1,
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isInProgress = true;
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 33,
-                                      decoration: BoxDecoration(
-                                        color: isInProgress
-                                            ? const Color(0xFF2575CC)
-                                            : Colors.white,
-                                        borderRadius: BorderRadius.horizontal(
-                                          left: Radius.circular(10),
-                                        ),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'In Progress',
-                                        style: TextStyle(
-                                          color: isInProgress
-                                              ? Colors.white
-                                              : const Color(0xFF9A9A9A),
-                                          fontSize: 16,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width: 1,
-                                  height: 34,
-                                  color: const Color(0xFF2575CC),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isInProgress = false;
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 33,
-                                      decoration: BoxDecoration(
-                                        color: !isInProgress
-                                            ? const Color(0xFF2575CC)
-                                            : Colors.white,
-                                        borderRadius: BorderRadius.horizontal(
-                                          right: Radius.circular(10),
-                                        ),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'Achieved',
-                                        style: TextStyle(
-                                          color: !isInProgress
-                                              ? Colors.white
-                                              : const Color(0xFF9A9A9A),
-                                          fontSize: 16,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding:
+                        EdgeInsets.only(left: 32.0, top: 24.0, bottom: 8.0),
+                    child: Text(
+                      'Goals',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF2575CC),
                       ),
                     ),
-                    Expanded(
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 24.0),
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    // Container(
-                                    //   width: 100,
-                                    //   child: Text(
-                                    //     'Goal Name',
-                                    //     style: TextStyle(
-                                    //       color: Color(0xFF2575CC),
-                                    //       fontSize: 15,
-                                    //       fontWeight: FontWeight.bold,
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    // Container(
-                                    //   width: 100,
-                                    //   child: Text(
-                                    //     'Amount',
-                                    //     style: TextStyle(
-                                    //       color: Color(0xFF2575CC),
-                                    //       fontSize: 15,
-                                    //       fontWeight: FontWeight.bold,
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    // Container(
-                                    //   width: 100,
-                                    //   child: Text(
-                                    //     'End Date',
-                                    //     style: TextStyle(
-                                    //       color: Color(0xFF2575CC),
-                                    //       fontSize: 15,
-                                    //       fontWeight: FontWeight.bold,
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: ListView.builder(
+                        child: goals.isEmpty
+                            ? _buildEmptyState()
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
                                 itemCount: goals.length,
                                 itemBuilder: (context, index) {
                                   final goal = goals[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16.0),
-                                    child: GoalItem(
-                                      goalId: goal['id'] as String?,
-                                      goalName: goal['title'] ?? '',
-                                      amount: goal['amount'] ?? 0,
-                                      endDate: goal['endDate'] ?? '',
-                                      image: goal['image'] as String?,
-                                      onAmountChanged: (newAmount) {
-                                        setState(() {
-                                          goal['amount'] = newAmount;
-                                        });
-                                      },
-                                      onDelete: () =>
-                                          deleteGoal(goal['title'] ?? ''),
-                                    ),
+                                  return GoalItem(
+                                    goalId: goal['id'] as String?,
+                                    goalName: goal['title'] ?? '',
+                                    amount: goal['amount'] ?? 0,
+                                    endDate: goal['endDate'] ?? '',
+                                    image: goal['image'] as String?,
+                                    onAmountChanged: (newAmount) {
+                                      setState(() {
+                                        goal['amount'] = newAmount;
+                                      });
+                                    },
+                                    onDelete: () =>
+                                        deleteGoal(goal['title'] ?? ''),
                                   );
                                 },
                               ),
-                            ),
-                            AddGoalButton(onPressed: addGoal),
-                            SizedBox(height: 16),
-                          ],
-                        ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32.0,
+                      vertical: 24.0,
+                    ),
+                    child: AddGoalButton(onPressed: addGoal),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 40),
+          Icon(
+            Icons.flag_outlined,
+            size: 70,
+            color: Color(0xFF2575CC).withOpacity(0.5),
+          ),
+          SizedBox(height: 16),
+          Text(
+            'No Goals Yet',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF2575CC),
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            'Create a goal by clicking the button below',
+            style: TextStyle(
+              fontSize: 14,
+              color: Color(0xFF2575CC).withOpacity(0.7),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }
@@ -395,21 +290,20 @@ class GoalItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-      elevation: 2,
+      margin: EdgeInsets.symmetric(vertical: 12.0),
+      elevation: 4,
       color: Color(0xFF7CACE0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(24.0),
         child: Row(
           children: [
-            // Square image on the left
             if (image != null && image!.isNotEmpty)
               Container(
-                width: 60,
-                height: 60,
+                width: 80,
+                height: 80,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.memory(
@@ -431,92 +325,69 @@ class GoalItem extends StatelessWidget {
               )
             else
               Container(
-                width: 60,
-                height: 60,
+                width: 80,
+                height: 80,
                 decoration: BoxDecoration(
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(Icons.image_not_supported, color: Colors.grey),
               ),
-            SizedBox(width: 12),
-            // Goal details
+            SizedBox(width: 16),
             Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // Title column
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Goal Name',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w500,
-                          ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Goal Name',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFFFFFFFF),
+                          fontWeight: FontWeight.w500,
                         ),
-                        SizedBox(height: 4),
-                        Text(
-                          goalName,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFFFFFFF),
-                          ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        goalName,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFFFFFFF),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  // Amount column
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Amount',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w500,
-                          ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Amount',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFFFFFFFF),
+                          fontWeight: FontWeight.w500,
                         ),
-                        SizedBox(height: 4),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: '$amount ',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFFFFFFF),
-                                ),
-                              ),
-                              TextSpan(
-                                text: 'KWD',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFFFFFFFF),
-                                ),
-                              ),
-                            ],
-                          ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        '$amount KWD',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFFFFFFF),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
-            SizedBox(width: 8),
-            // Delete button
             IconButton(
-              icon: Icon(Icons.delete, color: Colors.white, size: 20),
+              icon: Icon(Icons.remove_circle_outline,
+                  color: Colors.white, size: 24),
               onPressed: onDelete,
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(),
@@ -539,7 +410,7 @@ class AddGoalButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: GestureDetector(
         onTap: onPressed,
         child: Container(
@@ -553,6 +424,13 @@ class AddGoalButton extends StatelessWidget {
               width: 1,
               style: BorderStyle.solid,
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 4,
+                offset: Offset(0, 2),
+              ),
+            ],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -563,7 +441,7 @@ class AddGoalButton extends StatelessWidget {
                 'Add Goal',
                 style: TextStyle(
                   color: Color(0xFF2575CC),
-                  fontSize: 12,
+                  fontSize: 16,
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w600,
                 ),

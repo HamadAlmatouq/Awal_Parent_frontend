@@ -17,9 +17,7 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  bool isRequests = true;
   List<Map<String, dynamic>> requestNotifications = [];
-  List<Map<String, dynamic>> doneNotifications = [];
   bool isLoading = true;
 
   @override
@@ -61,7 +59,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
-          },                          
+          },
         ),
       );
 
@@ -78,6 +76,40 @@ class _NotificationScreenState extends State<NotificationScreen> {
         SnackBar(content: Text('Failed to process request')),
       );
     }
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 40),
+          Icon(
+            Icons.notifications_outlined,
+            size: 70,
+            color: Color(0xFF2575CC).withOpacity(0.5),
+          ),
+          SizedBox(height: 16),
+          Text(
+            'No Requests Yet',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF2575CC),
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            'No pending task requests at the moment',
+            style: TextStyle(
+              fontSize: 14,
+              color: Color(0xFF2575CC).withOpacity(0.7),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -115,108 +147,52 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ),
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Container(
-                      height: 35,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Color(0xFF2575CC),
-                          width: 1,
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () => setState(() => isRequests = true),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: isRequests
-                                      ? Color(0xFF2575CC)
-                                      : Colors.white,
-                                  borderRadius: BorderRadius.horizontal(
-                                      left: Radius.circular(8)),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Requests',
-                                  style: TextStyle(
-                                    color: isRequests
-                                        ? Colors.white
-                                        : Color(0xFF9A9A9A),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          VerticalDivider(width: 1, color: Color(0xFF2575CC)),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () => setState(() => isRequests = false),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: !isRequests
-                                      ? Color(0xFF2575CC)
-                                      : Colors.white,
-                                  borderRadius: BorderRadius.horizontal(
-                                      right: Radius.circular(8)),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Done',
-                                  style: TextStyle(
-                                    color: !isRequests
-                                        ? Colors.white
-                                        : Color(0xFF9A9A9A),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                  const Padding(
+                    padding:
+                        EdgeInsets.only(left: 32.0, top: 24.0, bottom: 8.0),
+                    child: Text(
+                      'Requests',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF2575CC),
                       ),
                     ),
                   ),
                   Expanded(
                     child: isLoading
                         ? Center(child: CircularProgressIndicator())
-                        : ListView.builder(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            itemCount: isRequests
-                                ? requestNotifications.length
-                                : doneNotifications.length,
-                            itemBuilder: (context, index) {
-                              final notification = isRequests
-                                  ? requestNotifications[index]
-                                  : doneNotifications[index];
-                              // Add null checks for all fields
-                              return NotificationCard(
-                                title: notification['title']?.toString() ??
-                                    'Task Request',
-                                time: notification['createdAt']?.toString() ??
-                                    'Unknown time',
-                                amount: (notification['amount'] as num?)
-                                        ?.toDouble() ??
-                                    0.0,
-                                isRequest: isRequests,
-                                onApprove: isRequests
-                                    ? () => _handleTaskAction(
-                                        notification['title'], true)
-                                    : null,
-                                onReject: isRequests
-                                    ? () => _handleTaskAction(
-                                        notification['title'], false)
-                                    : null,
-                              );
-                            },
+                        : SingleChildScrollView(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: requestNotifications.isEmpty
+                                  ? _buildEmptyState()
+                                  : Column(
+                                      children: requestNotifications
+                                          .map((notification) {
+                                        return NotificationCard(
+                                          title: notification['title']
+                                                  ?.toString() ??
+                                              'Task Request',
+                                          time: notification['createdAt']
+                                                  ?.toString() ??
+                                              'Unknown time',
+                                          amount:
+                                              (notification['amount'] as num?)
+                                                      ?.toDouble() ??
+                                                  0.0,
+                                          isRequest: true,
+                                          onApprove: () => _handleTaskAction(
+                                              notification['title'], true),
+                                          onReject: () => _handleTaskAction(
+                                              notification['title'], false),
+                                        );
+                                      }).toList(),
+                                    ),
+                            ),
                           ),
                   ),
                 ],
