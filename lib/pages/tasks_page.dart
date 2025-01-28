@@ -174,12 +174,13 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
               child: Column(
                 children: [
                   const Padding(
-                    padding: EdgeInsets.only(
-                        left: 32.0,
-                        top: 24.0,
-                        bottom: 8.0), // Updated padding to match goals page
+                    padding: EdgeInsets.symmetric(
+                      horizontal:
+                          32.0, // Changed from EdgeInsets.only to symmetric
+                      vertical: 24.0,
+                    ),
                     child: Align(
-                      alignment: Alignment.centerLeft, // Changed alignment
+                      alignment: Alignment.centerLeft,
                       child: Text(
                         'Tasks',
                         style: TextStyle(
@@ -190,28 +191,10 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        return Container(
-                          width: constraints.maxWidth,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: cardBackgroundColor,
-                          ),
-                          child: Row(
-                            children: [],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 32.0), // Updated from 16.0 to 32.0
+                        padding: const EdgeInsets.symmetric(horizontal: 32.0),
                         child: inProgressTasks.isEmpty
                             ? _buildEmptyState()
                             : Column(
@@ -246,8 +229,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 32.0, // Updated from 16.0 to 32.0
-                        vertical: 24.0),
+                      horizontal: 32.0,
+                      vertical: 24.0,
+                    ),
                     child: AddTaskButton(onPressed: addTask),
                   ),
                 ],
@@ -430,38 +414,36 @@ class AddTaskButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: GestureDetector(
-        onTap: onPressed,
-        child: Container(
-          height: 48,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: whiteCard,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: blueTextColor,
-              width: 1,
-              style: BorderStyle.solid,
-            ),
+    return GestureDetector(
+      // Removed the extra Padding widget
+      onTap: onPressed,
+      child: Container(
+        height: 48,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: whiteCard,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: blueTextColor,
+            width: 1,
+            style: BorderStyle.solid,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.add, color: blueTextColor),
-              const SizedBox(width: 8),
-              const Text(
-                'Add Task',
-                style: TextStyle(
-                  color: blueTextColor,
-                  fontSize: 12,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w600,
-                ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.add, color: blueTextColor),
+            const SizedBox(width: 8),
+            const Text(
+              'Add Task',
+              style: TextStyle(
+                color: blueTextColor,
+                fontSize: 12,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w600,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

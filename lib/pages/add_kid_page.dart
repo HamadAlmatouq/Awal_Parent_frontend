@@ -31,13 +31,9 @@ class _AddKidPageState extends State<AddKidPage> {
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 children: [
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Image.asset(
-                      'assets/images.png',
-                      width: 25,
-                      height: 38,
-                    ),
+                  IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () => Navigator.pop(context),
                   ),
                   Expanded(
                     child: Center(

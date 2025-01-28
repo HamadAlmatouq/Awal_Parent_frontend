@@ -100,19 +100,93 @@ class _DashboardPageState extends State<DashboardPage> {
   Future<void> _handleLogout() async {
     final shouldLogout = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Sign Out'),
-        content: Text('Are you sure you want to sign out?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text('Cancel'),
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Container(
+          width: 383,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(25),
           ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text('Sign Out'),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context, false),
+                    child: Icon(Icons.close, size: 24),
+                  ),
+                  const SizedBox(width: 80),
+                  const Text(
+                    'Sign Out',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontFamily: 'Inter',
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+              const Divider(color: Color(0xFFECECEC)),
+              const SizedBox(height: 16),
+              const Text(
+                'Are you sure you want to sign out?',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'Inter',
+                  color: Colors.black87,
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Divider(color: Color(0xFFECECEC)),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, false),
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  ElevatedButton(
+                    onPressed: () => Navigator.pop(context, true),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF2575CC),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                    ),
+                    child: const Text(
+                      'Sign Out',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
 
@@ -202,32 +276,42 @@ class _DashboardPageState extends State<DashboardPage> {
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(
-                32.0, 0, 20.0, 0), // Adjusted left padding
+            padding:
+                const EdgeInsets.all(20.0), // Changed from fromLTRB back to all
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'Good Morning,\n',
-                        style: TextStyle(
-                          color: whiteText,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Good Morning,\n',
+                                style: TextStyle(
+                                  color: whiteText,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '${user?.username ?? 'User'}',
+                                style: TextStyle(
+                                  color: whiteText,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      TextSpan(
-                        text: '${user?.username ?? 'User'}',
-                        style: TextStyle(
-                          color: whiteText,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  ],
                 ),
                 SizedBox(height: 20.0),
                 // First card for the main balance information
