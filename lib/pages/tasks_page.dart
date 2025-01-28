@@ -210,7 +210,8 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   Expanded(
                     child: SingleChildScrollView(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32.0), // Updated from 16.0 to 32.0
                         child: inProgressTasks.isEmpty
                             ? _buildEmptyState()
                             : Column(
@@ -245,7 +246,8 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 24.0),
+                        horizontal: 32.0, // Updated from 16.0 to 32.0
+                        vertical: 24.0),
                     child: AddTaskButton(onPressed: addTask),
                   ),
                 ],

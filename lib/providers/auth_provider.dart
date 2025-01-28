@@ -14,14 +14,14 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> signup({
     required String username,
     required String password,
-    required String pname, 
-    required String email, 
+    required String pname,
+    required String email,
   }) async {
     try {
       token = await AuthServices().signup(
         username: username,
         password: password,
-        pname: pname, 
+        pname: pname,
         email: email,
       );
       if (token.isNotEmpty) {
@@ -103,12 +103,22 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove(tokenKey);
-    token = "";
+  Future<void> logout() async {
+    try {
+      // Clear auth token from client headers
+      Client.dio.options.headers.remove('Authorization');
 
-    Client.dio.options.headers.remove(HttpHeaders.authorizationHeader);
-    notifyListeners();
+      // Clear stored values
+      token = "";
+      user = null;
+
+      // Clear any stored preferences if you're using them
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('token');
+
+      notifyListeners();
+    } catch (e) {
+      print('Error during logout: $e');
+    }
   }
 }

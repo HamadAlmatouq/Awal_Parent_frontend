@@ -97,30 +97,84 @@ class _DashboardPageState extends State<DashboardPage> {
     ]);
   }
 
-  void _showLogoutDialog() {
-    showDialog(
+  Future<void> _handleLogout() async {
+    final shouldLogout = await showDialog<bool>(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Logout'),
-          content: Text('Are you sure you want to log out?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
+      builder: (context) => AlertDialog(
+        title: Text('Sign Out'),
+        content: Text('Are you sure you want to sign out?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text('Sign Out'),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldLogout == true) {
+      // Close drawer first
+      Navigator.pop(context);
+      // Perform logout
+      await Provider.of<AuthProvider>(context, listen: false).logout();
+      // Navigate to sign in
+      if (mounted) {
+        context.go('/signin');
+      }
+    }
+  }
+
+  Widget _buildDrawer() {
+    return Drawer(
+      child: Container(
+        color: whiteCard,
+        child: Column(
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: blueBackground,
+              ),
+              child: Container(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: AssetImage('assets/your_image.png'),
+                      radius: 40,
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      '${Provider.of<AuthProvider>(context).user?.username ?? 'User'}',
+                      style: TextStyle(
+                        color: whiteText,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            TextButton(
-              onPressed: () {
-                Provider.of<AuthProvider>(context, listen: false).logout();
-                Navigator.of(context).pushReplacementNamed('/login');
-              },
-              child: Text('Logout'),
+            ListTile(
+              leading: Icon(Icons.logout, color: blueText),
+              title: Text(
+                'Sign Out',
+                style: TextStyle(
+                  color: blueText,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              onTap: _handleLogout,
             ),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -132,51 +186,48 @@ class _DashboardPageState extends State<DashboardPage> {
 
     return Scaffold(
       backgroundColor: blueBackground,
+      drawer: _buildDrawer(),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(Icons.menu, color: whiteText),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
+        ),
+      ),
       body: RefreshIndicator(
         onRefresh: _refreshData,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.fromLTRB(
+                32.0, 0, 20.0, 0), // Adjusted left padding
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 40.0),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Good Morning,\n',
-                                style: TextStyle(
-                                  color: whiteText,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              TextSpan(
-                                text: '${user?.username ?? 'User'}',
-                                style: TextStyle(
-                                  color: whiteText,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Good Morning,\n',
+                        style: TextStyle(
+                          color: whiteText,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.logout, color: whiteText, size: 24.0),
-                      onPressed: _showLogoutDialog,
-                    ),
-                  ],
+                      ),
+                      TextSpan(
+                        text: '${user?.username ?? 'User'}',
+                        style: TextStyle(
+                          color: whiteText,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(height: 20.0),
                 // First card for the main balance information

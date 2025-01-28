@@ -136,20 +136,20 @@ class ViewKidCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: GestureDetector(
-                    onTap: () {
-                      _showQRCodeDialog(context);
-                    },
-                    child: Icon(
-                      Icons.qr_code,
-                      color: whiteText,
-                      size: 30,
-                    ),
-                  ),
-                ),
+                // Positioned(
+                //   top: 10,
+                //   right: 10,
+                //   child: GestureDetector(
+                //     onTap: () {
+                //       _showQRCodeDialog(context);
+                //     },
+                //     child: Icon(
+                //       Icons.qr_code,
+                //       color: whiteText,
+                //       size: 30,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -283,21 +283,35 @@ class ViewKidCard extends StatelessWidget {
         'points': 3213,
         'required': 1500,
         'color': whiteCard,
-        // 'requested': true
+        'image': 'assets/dabdob.png',
       },
       {
         'title': 'Kidzania',
         'points': 3213,
         'required': 3000,
         'color': whiteCard,
-        'requested': false
+        'image': 'assets/kids.png',
       },
       {
         'title': 'SEPHORA',
         'points': 3213,
         'required': 4000,
         'color': whiteCard,
-        'requested': false
+        'image': 'assets/sephora.png',
+      },
+      {
+        'title': 'Toys R Us',
+        'points': 3213,
+        'required': 4750,
+        'color': whiteCard,
+        'image': 'assets/toys.png',
+      },
+      {
+        'title': 'Fantasy world',
+        'points': 3213,
+        'required': 5000,
+        'color': whiteCard,
+        'image': 'assets/fantasy.png',
       },
     ];
 
@@ -327,7 +341,7 @@ class ViewKidCard extends StatelessWidget {
             children: [
               ClipOval(
                 child: Image.asset(
-                  'assets/dabdob.png',
+                  reward['image'],
                   width: 50,
                   height: 50,
                   fit: BoxFit.cover,
@@ -433,7 +447,7 @@ class ViewKidCard extends StatelessWidget {
                     children: [
                       ClipOval(
                         child: Image.asset(
-                          'assets/dabdob.png',
+                          reward['image'],
                           width: 50,
                           height: 50,
                           fit: BoxFit.cover,
