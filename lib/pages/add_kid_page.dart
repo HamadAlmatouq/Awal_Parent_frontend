@@ -554,7 +554,7 @@ class _AddKidPageState extends State<AddKidPage> {
                 children: [
                   GestureDetector(
                     onTap: () => Navigator.pop(context),
-                    child: Image.network(
+                    child: Image.asset(
                       'assets/images.png',
                       width: 25,
                       height: 38,

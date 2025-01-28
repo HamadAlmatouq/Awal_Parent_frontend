@@ -431,8 +431,8 @@ class ViewKidCard extends StatelessWidget {
                   Row(
                     children: [
                       ClipOval(
-                        child: Image.network(
-                          'https://dashboard.codeparrot.ai/api/assets/Z49T3LJ_hFeCeO1N',
+                        child: Image.asset(
+                          'assets/dabdob.png',
                           width: 50,
                           height: 50,
                           fit: BoxFit.cover,
@@ -584,8 +584,8 @@ class ViewKidCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Image.network(
-                  'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Example',
+                Image.asset(
+                  'assets/qr.png',
                   width: 150,
                   height: 150,
                 ),
