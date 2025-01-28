@@ -325,8 +325,8 @@ class ViewKidCard extends StatelessWidget {
           child: Row(
             children: [
               ClipOval(
-                child: Image.network(
-                  'https://dashboard.codeparrot.ai/api/assets/Z49T3LJ_hFeCeO1N',
+                child: Image.asset(
+                  'assets/dabdob.png',
                   width: 50,
                   height: 50,
                   fit: BoxFit.cover,
