@@ -92,7 +92,7 @@ class _TransferDialogState extends State<TransferDialog> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'KWD $amountText has been transferred to $selectedKid',
+                  '$amountText KWD has been transferred to $selectedKid',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 16,
