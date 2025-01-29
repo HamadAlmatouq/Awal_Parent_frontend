@@ -207,7 +207,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
 class NotificationCard extends StatelessWidget {
   final String title;
-  final String time;
+  final String time; // We can keep this in the constructor but not display it
   final double amount;
   final bool isRequest;
   final VoidCallback? onApprove;
@@ -226,7 +226,7 @@ class NotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
       color: Color(0xFF7CACE0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
@@ -235,7 +235,9 @@ class NotificationCard extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
+            // Title and amount row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -246,61 +248,80 @@ class NotificationCard extends StatelessWidget {
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'Inter',
                     ),
                   ),
                 ),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  textBaseline: TextBaseline.alphabetic,
                   children: [
                     Text(
                       amount.toStringAsFixed(3),
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        fontFamily: 'Inter',
                       ),
                     ),
-                    SizedBox(width: 2),
                     Text(
-                      'KWD',
+                      ' KWD',
                       style: TextStyle(
-                        color: Colors.white70,
+                        color: Colors.white.withOpacity(0.7),
                         fontSize: 12,
+                        fontFamily: 'Inter',
                       ),
                     ),
                   ],
                 ),
               ],
             ),
-            SizedBox(height: 8),
-            Text(
-              time,
-              style: TextStyle(
-                color: Colors.white.withOpacity(0.7),
-                fontSize: 12,
-              ),
-            ),
-            if (isRequest && onApprove != null && onReject != null)
+            // Action buttons
+            if (isRequest && onApprove != null && onReject != null) ...[
+              SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
                     onPressed: onReject,
+                    style: TextButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      minimumSize: Size(80, 32),
+                    ),
                     child: Text(
                       'Reject',
-                      style: TextStyle(color: Colors.red),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Inter',
+                      ),
                     ),
                   ),
-                  TextButton(
+                  SizedBox(width: 8),
+                  ElevatedButton(
                     onPressed: onApprove,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      minimumSize: Size(80, 32),
+                    ),
                     child: Text(
                       'Approve',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                        color: Color(0xFF2575CC),
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Inter',
+                      ),
                     ),
                   ),
                 ],
               ),
+            ],
           ],
         ),
       ),

@@ -16,9 +16,9 @@ class AddGoalsDialog extends StatefulWidget {
 class _AddGoalsDialogState extends State<AddGoalsDialog> {
   final TextEditingController goalNameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
-  final TextEditingController endDateController = TextEditingController();
   String? errorMessage;
   File? _image;
+  final String fixedEndDate = "2030-01-01"; // Add this line
 
   Future<void> _pickImage() async {
     try {
@@ -49,9 +49,8 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
   void handleSubmit() async {
     final goalName = goalNameController.text.trim();
     final priceText = priceController.text.trim();
-    final endDate = endDateController.text.trim();
 
-    if (goalName.isEmpty || priceText.isEmpty || endDate.isEmpty) {
+    if (goalName.isEmpty || priceText.isEmpty) {
       setState(() {
         errorMessage = 'Please fill in all fields.';
       });
@@ -74,14 +73,6 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
       return;
     }
 
-    // Add validation for date format
-    if (!RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(endDate)) {
-      setState(() {
-        errorMessage = 'Date must be in YYYY-MM-DD format';
-      });
-      return;
-    }
-
     try {
       String? base64Image;
       if (_image != null) {
@@ -99,7 +90,7 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
       Navigator.pop(context, {
         'title': goalName,
         'amount': int.tryParse(priceText) ?? 0,
-        'endDate': endDate,
+        'endDate': fixedEndDate, // Use the fixed date
         'image': base64Image,
       });
     } catch (e) {
@@ -237,38 +228,6 @@ class _AddGoalsDialogState extends State<AddGoalsDialog> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
                 ),
                 keyboardType: TextInputType.number,
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'End Date',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontFamily: 'Inter',
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: endDateController,
-                decoration: InputDecoration(
-                  hintText: 'YYYY-MM-DD',
-                  hintStyle: const TextStyle(
-                    color: Color(0xFFC3C3C3),
-                    fontSize: 14,
-                    fontFamily: 'Inter',
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: backgroundColor),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFD3CDCD)),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-                ),
-                keyboardType: TextInputType.datetime,
               ),
               if (errorMessage != null) ...[
                 const SizedBox(height: 8),

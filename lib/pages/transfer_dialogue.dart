@@ -49,7 +49,86 @@ class _TransferDialogState extends State<TransferDialog> {
 
     try {
       await TransferServices().createTransfer(transferData);
-      Navigator.pop(context, transferData);
+
+      // Show success dialog before closing transfer dialog
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) => Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: Container(
+            width: 383,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2575CC).withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.check_circle,
+                    color: Color(0xFF2575CC),
+                    size: 40,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Transfer Successful!',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF2575CC),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'KWD $amountText has been transferred to $selectedKid',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Inter',
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close success dialog
+                    Navigator.of(context)
+                        .pop(transferData); // Close transfer dialog
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2575CC),
+                    minimumSize: const Size(double.infinity, 54),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: const Text(
+                    'Done',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
     } catch (e) {
       setState(() {
         // Extract error message from DioException or use toString()
